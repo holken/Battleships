@@ -1,23 +1,27 @@
 package com.example.simon.battleships;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.os.Vibrator;
+
+import org.w3c.dom.Text;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends Activity {
+public class PlayActivity extends AppCompatActivity {
+
     private Timer currentTimer = new Timer();
     private final Handler HANDLER = new Handler();
     private Vibrator VIBRATOR;
@@ -33,7 +37,15 @@ public class MainActivity extends Activity {
     private final int NEAR_HIT = 1;
 
     private TextView COORDS_TEXT;
-    private Button internetButton;
+
+    private SocketHandler socketHandler;
+    TextView clientView;
+    TextView serverView;
+    TextView localClientView;
+    ClientWrite sender;
+    ClientRead receiver;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,17 +53,36 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_play);
 
-      //TEMP Ersätts från andra enheten
-        placeShip(0,0);
-        internetButton = (Button) findViewById(R.id.internetButton);
-        internetButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), ConnectionActivity.class);
-                startActivity(intent);
-            }
-        });
+        clientView = (TextView) findViewById(R.id.clientSocket);
+        serverView = (TextView) findViewById(R.id.serverSocket);
+        localClientView = (TextView) findViewById(R.id.localClientSocket);
+        socketHandler = new SocketHandler();
+
+
+        receiver = new ClientRead (SocketHandler.getClientSocket(), 4001, this);
+        sender = new ClientWrite(SocketHandler.getClientSocket(), 4001, this);
+
+
+        receiver.start();
+        sender.start();
+
+            /*
+        try {
+            Thread.sleep(500);
+        } catch (Exception e){
+
+        }
+        */
+/*
+        if (bothConnected && coordsNotSent){
+
+        }*/
+
+        /*while (!haveReceviedCoords){
+            sender.sendRandomCoords();
+        }*/
 
         final ConstraintLayout LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
         COORDS_TEXT = (TextView) findViewById(R.id.Coordinates);
@@ -61,7 +92,7 @@ public class MainActivity extends Activity {
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-              //  COORDS_TEXT.setText("Touch at " + (int) (motionEvent.getY()/120) + ", " + (int) (motionEvent.getX()/120));
+                //  COORDS_TEXT.setText("Touch at " + (int) (motionEvent.getY()/120) + ", " + (int) (motionEvent.getX()/120));
                 if(!isVibrating) {
                     int delay = 0;
                     if(initiateVibration((int) motionEvent.getY(), (int) motionEvent.getX())) { //Typecast?
@@ -97,14 +128,14 @@ public class MainActivity extends Activity {
     private boolean initiateVibration(int x, int y) {
         switch(grid[x / GRID_PIXEL_WIDTH][y / GRID_PIXEL_WIDTH]) {
             case 2: VIBRATOR.vibrate(HIT_VIBRATION_PATTERN, 0);
-                    COORDS_TEXT.setText("HIT!!!");
-                    return true;
+                COORDS_TEXT.setText("HIT!!!");
+                return true;
             case 1: VIBRATOR.vibrate(NEAR_HIT_VIBRATION_PATTERN, 0);
                 COORDS_TEXT.setText("GETTING CLOSER");
-                    return true;
+                return true;
             case 0: VIBRATOR.vibrate(MISS_VIBRATION_PATTERN, 0);
                 COORDS_TEXT.setText("MISS....");
-                     return false;
+                return false;
             default: return false;
         }
     }
