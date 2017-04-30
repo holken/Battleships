@@ -37,6 +37,8 @@ public class PlayActivity extends AppCompatActivity {
     private final int NEAR_HIT = 1;
 
     private TextView COORDS_TEXT;
+    public boolean haveReceviedCoords;
+    public boolean finishedSendingCoords;
 
     private SocketHandler socketHandler;
     TextView clientView;
@@ -68,21 +70,20 @@ public class PlayActivity extends AppCompatActivity {
         receiver.start();
         sender.start();
 
-            /*
-        try {
-            Thread.sleep(500);
-        } catch (Exception e){
-
-        }
-        */
-/*
-        if (bothConnected && coordsNotSent){
-
-        }*/
-
-        /*while (!haveReceviedCoords){
+        int count = 10000;
+        while (!receiver.haveReceivedAK && count > 0){
+            count--;
             sender.sendRandomCoords();
-        }*/
+            if (receiver.haveReceviedCoords){
+                sender.sendToOpponent("AK");
+            }/*
+            try {
+                Thread.sleep(50);
+            } catch (Exception e){
+
+            }
+            */
+        }
 
         final ConstraintLayout LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
         COORDS_TEXT = (TextView) findViewById(R.id.Coordinates);
