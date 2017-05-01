@@ -106,10 +106,10 @@ public class ClientWrite extends Thread{
     public void sendRandomCoords(){
         //initialize startingposition
         Random rand = new Random();
-        int xCoord = rand.nextInt(5);
-        int yCoord = rand.nextInt(5);
-        Log.e ("fish", "Writer placing boat: " + "PB" + xCoord + yCoord);
-        writer.println("PB" + xCoord + yCoord);
+        int xCoord = rand.nextInt(16);
+        int yCoord = rand.nextInt(9);
+        Log.e ("fish", "Writer placing boat: " + "PB" + xCoord + "|" + yCoord);
+        writer.println("PB" + xCoord + "|" + yCoord);
     }
 
     public void sendToOpponent(String word){

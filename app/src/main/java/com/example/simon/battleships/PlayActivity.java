@@ -2,12 +2,15 @@ package com.example.simon.battleships;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -22,10 +25,14 @@ import java.util.TimerTask;
 
 public class PlayActivity extends AppCompatActivity {
 
+    DisplayMetrics metrics;
+    int width;
+    int height;
+
     private Timer currentTimer = new Timer();
     private final Handler HANDLER = new Handler();
     private Vibrator VIBRATOR;
-    private final int GRID_PIXEL_WIDTH = 120; //Change to dynamic
+    private int GRID_PIXEL_WIDTH = 120; //Change to dynamic
     private final long[] HIT_VIBRATION_PATTERN = {0, 80, 0};
     private final long[] NEAR_HIT_VIBRATION_PATTERN = {0, 40, 40}; //Delay, On-duration, Off-duration
     private final long[] MISS_VIBRATION_PATTERN = {0, 40, 120};
@@ -38,12 +45,12 @@ public class PlayActivity extends AppCompatActivity {
 
     private TextView COORDS_TEXT;
     public boolean haveReceviedCoords;
-    public boolean finishedSendingCoords;
+    public boolean haveReceivedAK;
 
     private SocketHandler socketHandler;
-    TextView clientView;
-    TextView serverView;
-    TextView localClientView;
+    //TextView clientView;
+    //TextView serverView;
+    //TextView localClientView;
     ClientWrite sender;
     ClientRead receiver;
 
@@ -57,9 +64,16 @@ public class PlayActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_play);
 
-        clientView = (TextView) findViewById(R.id.clientSocket);
-        serverView = (TextView) findViewById(R.id.serverSocket);
-        localClientView = (TextView) findViewById(R.id.localClientSocket);
+
+        metrics = getResources().getDisplayMetrics();
+        width = metrics.widthPixels;
+        height = metrics.heightPixels;
+        GRID_PIXEL_WIDTH = width / 9;
+        Log.d("fish5", Integer.toString(width));
+
+        //clientView = (TextView) findViewById(R.id.clientSocket);
+        //serverView = (TextView) findViewById(R.id.serverSocket);
+        //ocalClientView = (TextView) findViewById(R.id.localClientSocket);
         socketHandler = new SocketHandler();
 
 
@@ -71,12 +85,15 @@ public class PlayActivity extends AppCompatActivity {
         sender.start();
 
         int count = 10000;
-        while (!receiver.haveReceivedAK && count > 0){
+        while (!haveReceivedAK && count > 0){
+            //haveReceivedAK = receiver.haveReceivedAK.get();
             count--;
             sender.sendRandomCoords();
-            if (receiver.haveReceviedCoords){
+            if (!haveReceviedCoords){
                 sender.sendToOpponent("AK");
-            }/*
+            }
+            //haveReceviedCoords = receiver.haveReceviedCoords.get();
+            /*
             try {
                 Thread.sleep(50);
             } catch (Exception e){

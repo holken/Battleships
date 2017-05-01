@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by simon on 2017-04-29.
@@ -23,9 +24,9 @@ public class ClientRead extends Thread{
     InputStreamReader reader;
     BufferedReader buffReader;
 
-    public boolean haveReceviedCoords = false;
+    public volatile AtomicBoolean haveReceviedCoords = new AtomicBoolean(false);
 
-    boolean haveReceivedAK = false;
+    public volatile AtomicBoolean haveReceivedAK = new AtomicBoolean(false);
 
     public ClientRead(Socket socket, int nmr, PlayActivity activity){
         this.socket = socket;
@@ -47,7 +48,7 @@ public class ClientRead extends Thread{
                 if (character.startsWith("PB")){
                     updateShipPosition(character.substring(2));
                 } else if (character.startsWith("AK")){
-                    haveReceivedAK = true;
+                    haveReceivedAK.set(true);
                 }
             }
             socket.close();
@@ -58,9 +59,13 @@ public class ClientRead extends Thread{
     }
 
     private void updateShipPosition(String boatPosition){
-        Log.e("fish", "first position: " + boatPosition.substring(0,1) + " Second position: " + boatPosition.substring(1,2));
-        activity.placeShip(Integer.parseInt(boatPosition.substring(0,1)), Integer.parseInt(boatPosition.substring(1,2)));
-        haveReceviedCoords = true;
+        if (!haveReceviedCoords.get()){
+
+
+        Log.e("fish", "first position: " + boatPosition.substring(0,boatPosition.indexOf("|")) + " Second position: " + boatPosition.substring(boatPosition.indexOf("|")+1));
+        activity.placeShip(Integer.parseInt(boatPosition.substring(0,boatPosition.indexOf("|"))), Integer.parseInt(boatPosition.substring(boatPosition.indexOf("|")+1)));
+        haveReceviedCoords.set(true);
+        }
     }
 
 
