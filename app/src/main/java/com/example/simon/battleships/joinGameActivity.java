@@ -59,8 +59,8 @@ public class joinGameActivity extends AppCompatActivity {
                 if (socketHandler.getClientSocket() != null)
                     clientStatusText.setText("connected to: " + socketHandler.getClientSocket().toString());
 
-                //Intent intent = new Intent(v.getContext(), PlayActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(v.getContext(), PlayActivity.class);
+                startActivity(intent);
 
 
             }

@@ -9,8 +9,8 @@ import android.widget.TextView;
 public class createGameActivity extends AppCompatActivity {
 
     Host host;
-    SocketHandler socketHandler;
-    TextView statusText;
+    static SocketHandler socketHandler;
+    static TextView statusText;
     TextView ipText;
     WifiManager mManager;
     WifiInfo mWifiInfo;
@@ -46,7 +46,7 @@ public class createGameActivity extends AppCompatActivity {
 
     }
 
-    public synchronized void setHasConnected(){
-        statusText.setText(socketHandler.getClientSocket().toString() + " has connected");
+    public static synchronized void setHasConnected(){
+        statusText.setText(SocketHandler.getClientSocket().toString() + " has connected");
     }
 }
