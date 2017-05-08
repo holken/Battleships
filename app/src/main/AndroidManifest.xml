@@ -33,7 +33,10 @@
             android:label="@string/title_activity_network"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ConnectionActivity" />
-        <activity android:name=".PlayActivity"></activity>
+        <activity android:name=".PlayActivity" />
+        <activity android:name=".createGameActivity" />
+        <activity android:name=".joinGameActivity" />
+        <activity android:name=".howToPlayActivity"></activity>
     </application>
 
 </manifest>
