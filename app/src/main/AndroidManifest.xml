@@ -39,7 +39,16 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".PlayActivity"
             android:screenOrientation="portrait"
-            ></activity>
+            />
+        <activity android:name=".createGameActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".joinGameActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".howToPlayActivity"
+            android:screenOrientation="portrait"
+            />
 
 
     </application>

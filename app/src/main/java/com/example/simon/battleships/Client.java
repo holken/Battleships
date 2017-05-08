@@ -39,7 +39,7 @@ import java.util.Random;
                 int nmr = 4001;
                 socket = new Socket(address, 4001);
                 SocketHandler.setClientSocket(socket);
-                Log.e("fish", socket.toString());
+                Log.e("clientCon", socket.toString());
                 //t1 = new ClientRead(socket, nmr);
                 //t2 = new ClientWrite(socket, nmr);
                 //t1.start();

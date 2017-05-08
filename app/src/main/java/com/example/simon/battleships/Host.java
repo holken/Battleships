@@ -1,5 +1,6 @@
 package com.example.simon.battleships;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -24,6 +25,11 @@ public class Host extends AsyncTask<Void, Void, Socket> {
     Socket client;
     public Socket client2;
     public ServerSocket hostSocket;
+    createGameActivity createAct;
+
+    public Host(createGameActivity createGame){
+        createAct = createGame;
+    }
 
 
     protected Socket doInBackground(Void... voids) {
@@ -44,7 +50,7 @@ public class Host extends AsyncTask<Void, Void, Socket> {
 
 
                     OutputStream out = client.getOutputStream();
-
+                    createAct.setHasConnected();
                     run();
                 } catch (IOException e){
                     e.printStackTrace();

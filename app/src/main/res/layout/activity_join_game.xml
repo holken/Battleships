@@ -6,4 +6,31 @@
     android:layout_height="match_parent"
     tools:context="com.example.simon.battleships.joinGameActivity">
 
+    <EditText
+        android:id="@+id/ipEnter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Enter ip"
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="-4dp" />
+
+    <Button
+        android:id="@+id/findHostButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Button"
+        app:layout_constraintTop_toBottomOf="@+id/ipEnter"
+        tools:layout_editor_absoluteX="147dp" />
+
+    <TextView
+        android:id="@+id/clientStatusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintTop_toBottomOf="@+id/findHostButton"
+        tools:layout_editor_absoluteX="162dp" />
 </android.support.constraint.ConstraintLayout>
