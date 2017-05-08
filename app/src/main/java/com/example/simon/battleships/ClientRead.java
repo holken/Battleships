@@ -49,6 +49,8 @@ public class ClientRead extends Thread{
                     updateShipPosition(character.substring(2));
                 } else if (character.startsWith("AK")){
                     haveReceivedAK.set(true);
+                } else if (character.startsWith("CON")){
+
                 }
             }
             socket.close();
