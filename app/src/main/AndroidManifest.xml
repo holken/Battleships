@@ -30,11 +30,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".NetworkActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_network"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ConnectionActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".PlayActivity"

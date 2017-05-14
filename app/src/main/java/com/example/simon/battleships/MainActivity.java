@@ -1,18 +1,13 @@
 package com.example.simon.battleships;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
-import android.os.Vibrator;
 
 
 public class MainActivity extends Activity {
@@ -29,6 +24,8 @@ public class MainActivity extends Activity {
         Button howButton = (Button) findViewById(R.id.howButton);
         Button testButton = (Button) findViewById(R.id.testButton);
 
+        //Calls the GameManager to set up game to match resources
+        GameManager.initializeGame(getResources().getDisplayMetrics().widthPixels / 9);
 
         final ConstraintLayout LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
 

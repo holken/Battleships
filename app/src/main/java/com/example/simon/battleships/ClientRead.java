@@ -64,7 +64,8 @@ public class ClientRead extends Thread{
         if (!haveReceviedCoords.get()){
 
         Log.e("fish", "first position: " + boatPosition.substring(0,boatPosition.indexOf("|")) + " Second position: " + boatPosition.substring(boatPosition.indexOf("|")+1));
-        activity.placeShip(Integer.parseInt(boatPosition.substring(0,boatPosition.indexOf("|"))), Integer.parseInt(boatPosition.substring(boatPosition.indexOf("|")+1)));
+        GameManager.placeShip(Integer.parseInt(boatPosition.substring(0,boatPosition.indexOf("|"))), Integer.parseInt(boatPosition.substring(boatPosition.indexOf("|")+1)));
+            //KOLLA SENARE
         haveReceviedCoords.set(true);
         }
     }

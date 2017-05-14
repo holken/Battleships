@@ -1,9 +1,9 @@
 package com.example.simon.battleships;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
 
-public class howToPlayActivity extends AppCompatActivity {
+public class howToPlayActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,48 +1,32 @@
 package com.example.simon.battleships;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Paint;
-import android.graphics.Point;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class PlayActivity extends AppCompatActivity {
-
-    DisplayMetrics metrics;
-    int width;
-    int height;
-
+public class PlayActivity extends Activity {
     private Timer currentTimer = new Timer();
     private final Handler HANDLER = new Handler();
     private Vibrator VIBRATOR;
-    private int GRID_PIXEL_WIDTH = 120; //Change to dynamic
     private final long[] HIT_VIBRATION_PATTERN = {0, 80, 0};
     private final long[] NEAR_HIT_VIBRATION_PATTERN = {0, 40, 40}; //Delay, On-duration, Off-duration
     private final long[] MISS_VIBRATION_PATTERN = {0, 40, 120};
     private final int HIT_OR_NEAR_HIT_DELAY = 80;
     private final int MISS_DELAY = 160;
     private boolean isVibrating = false;
-    private int[][] grid =  new int[16][9];
-    private final int HIT = 2;
-    private final int NEAR_HIT = 1;
 
     private TextView COORDS_TEXT;
 
@@ -59,15 +43,8 @@ public class PlayActivity extends AppCompatActivity {
 
 
         if(!MainActivity.TEST) {
-            new GameManager(this);
+            new ConnectionManager(this);
         }
-
-        metrics = getResources().getDisplayMetrics();
-        width = metrics.widthPixels;
-        height = metrics.heightPixels;
-        GRID_PIXEL_WIDTH = width / 9;
-        Log.d("fish5", Integer.toString(width));
-
 
         final ConstraintLayout LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
         COORDS_TEXT = (TextView) findViewById(R.id.Coordinates);
@@ -80,7 +57,7 @@ public class PlayActivity extends AppCompatActivity {
                 //  COORDS_TEXT.setText("Touch at " + (int) (motionEvent.getY()/120) + ", " + (int) (motionEvent.getX()/120));
                 if(!isVibrating) {
                     int delay = 0;
-                    if(initiateVibration((int) motionEvent.getY(), (int) motionEvent.getX())) { //Typecast? //Fixa x och y
+                    if(initiateVibration((int) motionEvent.getX(), (int) motionEvent.getY())) { //Typecast? //Fixa x och y
                         delay = HIT_OR_NEAR_HIT_DELAY;
                     } else {
                         delay = MISS_DELAY;
@@ -110,8 +87,8 @@ public class PlayActivity extends AppCompatActivity {
      * @param y Y-coordinate for touch
      * @return true if ship is hit, else returns false
      */
-    private boolean initiateVibration(int y, int x) {
-        switch(grid[y / GRID_PIXEL_WIDTH][x / GRID_PIXEL_WIDTH]) {
+    private boolean initiateVibration(int x, int y) {
+        switch(GameManager.isHit(x, y)) {
             case 2: VIBRATOR.vibrate(HIT_VIBRATION_PATTERN, 0);
                 COORDS_TEXT.setText("HIT!!!");
                 return true;
@@ -123,21 +100,5 @@ public class PlayActivity extends AppCompatActivity {
                 return false;
             default: return false;
         }
-    }
-
-    /**
-     * Places the ship on specified x and y coordinates and sets adjacent tiles to near hits
-     * @param x X-coordinate for ship
-     * @param y Y-coordinate for ship
-     */
-    public void placeShip(int x, int y) {
-        for(int i = x-1; i <= x+1; i++) {
-            for(int j = y-1; j <= y+1; j++) {
-                if(!(i < 0 || j < 0 || i > 15 || j > 8)) {
-                    grid[i][j] = 1;
-                }
-            }
-        }
-        grid[x][y] = 2;
     }
 }
