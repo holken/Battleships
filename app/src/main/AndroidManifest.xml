@@ -49,6 +49,8 @@
         <activity android:name=".howToPlayActivity"
             android:screenOrientation="portrait"
             />
+        <activity android:name=".PlaceBoatActivity"
+            android:screenOrientation="portrait"/>
 
 
     </application>

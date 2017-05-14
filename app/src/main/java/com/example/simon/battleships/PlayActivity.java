@@ -2,6 +2,7 @@ package com.example.simon.battleships;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -44,15 +45,7 @@ public class PlayActivity extends AppCompatActivity {
     private final int NEAR_HIT = 1;
 
     private TextView COORDS_TEXT;
-    public boolean haveReceviedCoords;
-    public boolean haveReceivedAK;
 
-    private SocketHandler socketHandler;
-    //TextView clientView;
-    //TextView serverView;
-    //TextView localClientView;
-    ClientWrite sender;
-    ClientRead receiver;
 
 
 
@@ -65,42 +58,16 @@ public class PlayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_play);
 
 
+        if(!MainActivity.TEST) {
+            new GameManager(this);
+        }
+
         metrics = getResources().getDisplayMetrics();
         width = metrics.widthPixels;
         height = metrics.heightPixels;
         GRID_PIXEL_WIDTH = width / 9;
         Log.d("fish5", Integer.toString(width));
 
-        //clientView = (TextView) findViewById(R.id.clientSocket);
-        //serverView = (TextView) findViewById(R.id.serverSocket);
-        //ocalClientView = (TextView) findViewById(R.id.localClientSocket);
-        socketHandler = new SocketHandler();
-
-
-        receiver = new ClientRead (SocketHandler.getClientSocket(), 4001, this);
-        sender = new ClientWrite(SocketHandler.getClientSocket(), 4001, this);
-
-
-        receiver.start();
-        sender.start();
-
-        int count = 10000;
-        while (!haveReceivedAK && count > 0){
-            //haveReceivedAK = receiver.haveReceivedAK.get();
-            count--;
-            sender.sendRandomCoords();
-            if (!haveReceviedCoords){
-                sender.sendToOpponent("AK");
-            }
-            //haveReceviedCoords = receiver.haveReceviedCoords.get();
-            /*
-            try {
-                Thread.sleep(50);
-            } catch (Exception e){
-
-            }
-            */
-        }
 
         final ConstraintLayout LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
         COORDS_TEXT = (TextView) findViewById(R.id.Coordinates);
@@ -113,7 +80,7 @@ public class PlayActivity extends AppCompatActivity {
                 //  COORDS_TEXT.setText("Touch at " + (int) (motionEvent.getY()/120) + ", " + (int) (motionEvent.getX()/120));
                 if(!isVibrating) {
                     int delay = 0;
-                    if(initiateVibration((int) motionEvent.getY(), (int) motionEvent.getX())) { //Typecast?
+                    if(initiateVibration((int) motionEvent.getY(), (int) motionEvent.getX())) { //Typecast? //Fixa x och y
                         delay = HIT_OR_NEAR_HIT_DELAY;
                     } else {
                         delay = MISS_DELAY;
@@ -128,7 +95,7 @@ public class PlayActivity extends AppCompatActivity {
                 }
 
                 if (motionEvent.getAction() == android.view.MotionEvent.ACTION_UP) {
-                    VIBRATOR.cancel();
+                        VIBRATOR.cancel();
                     isVibrating = false;
                 }
 
@@ -143,8 +110,8 @@ public class PlayActivity extends AppCompatActivity {
      * @param y Y-coordinate for touch
      * @return true if ship is hit, else returns false
      */
-    private boolean initiateVibration(int x, int y) {
-        switch(grid[x / GRID_PIXEL_WIDTH][y / GRID_PIXEL_WIDTH]) {
+    private boolean initiateVibration(int y, int x) {
+        switch(grid[y / GRID_PIXEL_WIDTH][x / GRID_PIXEL_WIDTH]) {
             case 2: VIBRATOR.vibrate(HIT_VIBRATION_PATTERN, 0);
                 COORDS_TEXT.setText("HIT!!!");
                 return true;
