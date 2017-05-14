@@ -33,7 +33,7 @@ public class PlaceBoatActivity extends Activity {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(context, PlayActivity.class);
+                        Intent intent = new Intent(context, SaluteActivity.class);
                         context.startActivity(intent);
                     }
                 })

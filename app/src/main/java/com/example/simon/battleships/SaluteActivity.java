@@ -10,6 +10,8 @@ import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Window;
+import android.view.WindowManager;
 
 import java.io.IOException;
 import java.util.Timer;
@@ -21,7 +23,6 @@ public class SaluteActivity extends Activity implements SensorEventListener {
     private Sensor mProximity;
     private boolean isSaluting;
     private boolean opponentSaluting;
-    private Timer timer;
     private MediaPlayer mediaPlayer;
     private final long COUNTDOWN_TIME = 3000;
     private Handler mHandler;
@@ -31,6 +32,9 @@ public class SaluteActivity extends Activity implements SensorEventListener {
     @Override
     public final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_salute);
 
         // Get an instance of the sensor service, and use that to get an instance of
@@ -39,14 +43,13 @@ public class SaluteActivity extends Activity implements SensorEventListener {
         mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         isSaluting = false;
         opponentSaluting = true;  //temporarily true, change this to false!!!
-        timer = new Timer();
         mediaPlayer = MediaPlayer.create(this, R.raw.countdown);
         mHandler = new Handler();
         //Creates a runnable that starts the game by switching to PlayActivity
         rStartGame = new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class); //Change to PlayActivity
+                Intent intent = new Intent(getApplicationContext(), PlayActivity.class); //Change to PlayActivity
                 startActivity(intent);
             }
 
