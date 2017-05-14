@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Created by simon on 2017-04-29.
  */
 
-public class ClientRead extends Thread{
+public class ClientRead extends Thread {
 
     Socket socket;
     int nmr;
@@ -28,13 +28,13 @@ public class ClientRead extends Thread{
 
     public volatile AtomicBoolean haveReceivedAK = new AtomicBoolean(false);
 
-    public ClientRead(Socket socket, int nmr, PlayActivity activity){
+    public ClientRead(Socket socket, int nmr, PlayActivity activity) {
         this.socket = socket;
         this.nmr = nmr;
         this.activity = activity;
     }
 
-    public void run(){
+    public void run() {
         try {
             input = socket.getInputStream();
             Log.e("fish3", socket.toString());
@@ -42,14 +42,14 @@ public class ClientRead extends Thread{
             buffReader = new BufferedReader(reader);
             String character;
 
-            while (!socket.isClosed()){
+            while (!socket.isClosed()) {
                 character = buffReader.readLine();
                 Log.e("fish2", character);
-                if (character.startsWith("PB")){
+                if (character.startsWith("PB")) {
                     updateShipPosition(character.substring(2));
-                } else if (character.startsWith("AK")){
+                } else if (character.startsWith("AK")) {
                     haveReceivedAK.set(true);
-                } else if (character.startsWith("CON")){
+                } else if (character.startsWith("CON")) {
 
                 }
             }
@@ -60,15 +60,11 @@ public class ClientRead extends Thread{
         }
     }
 
-    private void updateShipPosition(String boatPosition){
-        if (!haveReceviedCoords.get()){
-
-
-        Log.e("fish", "first position: " + boatPosition.substring(0,boatPosition.indexOf("|")) + " Second position: " + boatPosition.substring(boatPosition.indexOf("|")+1));
-        activity.placeShip(Integer.parseInt(boatPosition.substring(0,boatPosition.indexOf("|"))), Integer.parseInt(boatPosition.substring(boatPosition.indexOf("|")+1)));
-        haveReceviedCoords.set(true);
+    private void updateShipPosition(String boatPosition) {
+        if (!haveReceviedCoords.get()) {
+            Log.e("fish", "first position: " + boatPosition.substring(0, boatPosition.indexOf("|")) + " Second position: " + boatPosition.substring(boatPosition.indexOf("|") + 1));
+            activity.placeShip(Integer.parseInt(boatPosition.substring(0, boatPosition.indexOf("|"))), Integer.parseInt(boatPosition.substring(boatPosition.indexOf("|") + 1)));
+            haveReceviedCoords.set(true);
         }
     }
-
-
 }

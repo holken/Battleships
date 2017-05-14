@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
         });
         howButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), howToPlayActivity.class);
+                Intent intent = new Intent(v.getContext(), SaluteActivity.class);
                 startActivity(intent);
             }
         });

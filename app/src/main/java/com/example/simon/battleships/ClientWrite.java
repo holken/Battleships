@@ -83,16 +83,8 @@ public class ClientWrite extends Thread{
             //output = socket.getOutputStream();
             //writer = new PrintWriter(output);
 
-            String character;
-            int count = 100;
-            while (count > 0){
-                sendRandomCoords();
-                count--;
-            }
-
             while (!socket.isClosed()) {
                 sendText(writer);
-
             }
 
 
