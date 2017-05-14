@@ -35,6 +35,7 @@ public class PlaceBoatActivity extends Activity {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent intent = new Intent(context, SaluteActivity.class);
                         context.startActivity(intent);
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
