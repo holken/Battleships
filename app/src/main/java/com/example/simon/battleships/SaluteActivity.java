@@ -51,6 +51,7 @@ public class SaluteActivity extends Activity implements SensorEventListener {
             public void run() {
                 Intent intent = new Intent(getApplicationContext(), PlayActivity.class); //Change to PlayActivity
                 startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
 
         };
