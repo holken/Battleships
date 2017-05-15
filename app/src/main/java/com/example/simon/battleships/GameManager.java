@@ -5,6 +5,8 @@ public class GameManager {
     private static final int HIT = 2;
     private static final int NEAR_HIT = 1;
     private static int GRID_PIXEL_WIDTH = 120;
+    private static int xPos;
+    private static int yPos;
 
     /**
      * Sets up game to match resources
@@ -20,6 +22,8 @@ public class GameManager {
      * @param y Y-coordinate for ship
      */
     public static void placeShip(int x, int y) {
+        xPos = x;
+        yPos = y;
         for(int i = y-1; i <= y+1; i++) {
             for(int j = x-1; j <= x+1; j++) {
                 if(!(i < 0 || j < 0 || i > 15 || j > 8)) {
@@ -46,4 +50,6 @@ public class GameManager {
     public static int getGridPixelWidth() {
         return GRID_PIXEL_WIDTH;
     }
+    public static int getShipX(){ return xPos; }
+    public static int getShipY(){ return yPos; }
 }

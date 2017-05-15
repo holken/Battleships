@@ -19,6 +19,8 @@ public class PlaceBoatActivity extends Activity {
     private Handler handler;
     private Button upperReadyButton;
     private Button lowerReadyButton;
+    private int gridX;
+    private int gridY;
 
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -33,7 +35,7 @@ public class PlaceBoatActivity extends Activity {
         upperReadyButton = (Button) findViewById(R.id.upperReadyButton);
         lowerReadyButton = (Button) findViewById(R.id.lowerReadyButton);
         hideButtons();
-        
+
         //imageView set width/height to GRID_PIXEL_WIDTH
         final ConstraintLayout LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
         LAYOUT.setOnTouchListener(new View.OnTouchListener() {
@@ -42,7 +44,7 @@ public class PlaceBoatActivity extends Activity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    placeShip((int) motionEvent.getX(), (int) motionEvent.getY());
+                    placeShipImage((int) motionEvent.getX(), (int) motionEvent.getY());
                     showReadyButton((int) motionEvent.getY());
                 }
                 return true;
@@ -68,7 +70,9 @@ public class PlaceBoatActivity extends Activity {
             });
         }
     }
+
     private void readyUp(){
+        GameManager.placeShip(gridX, gridY);
         hideButtons();
         spinner.setVisibility(View.VISIBLE);
         handler.postDelayed(new Runnable() {
@@ -80,6 +84,7 @@ public class PlaceBoatActivity extends Activity {
             }
         }, 3000);
     }
+
     private void hideButtons(){
         upperReadyButton.setVisibility(View.GONE);
         upperReadyButton.setOnClickListener(null);
@@ -93,11 +98,10 @@ public class PlaceBoatActivity extends Activity {
      * @param x X-coordinate for ship
      * @param y Y-coordinate for ship
      */
-    public void placeShip(int x, int y) {
+    public void placeShipImage(int x, int y) {
         int gridPixelWidth = GameManager.getGridPixelWidth();
-        int gridX = x / gridPixelWidth;
-        int gridY = y / gridPixelWidth;
-        GameManager.placeShip(gridX, gridY);
+        gridX = x / gridPixelWidth;
+        gridY = y / gridPixelWidth;
         imageView.setX(gridX * gridPixelWidth);
         imageView.setY(gridY * gridPixelWidth);
         imageView.setVisibility(View.VISIBLE);
