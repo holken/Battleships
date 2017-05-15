@@ -72,21 +72,23 @@ public class PlayActivity extends Activity {
                 if (motionEvent.getAction() == android.view.MotionEvent.ACTION_UP) {
                     VIBRATOR.cancel();
                     isVibrating = false;
-                    if(mediaPlayer.isPlaying()){
-                        mediaPlayer.reset();
-                        try {
-                            mediaPlayer.prepare();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    mediaPlayer.start();
-
+                    launchMissile();
                 }
 
                 return true;
             }
         });
+    }
+    private void launchMissile(){
+        if(mediaPlayer.isPlaying()){
+            mediaPlayer.stop();
+            try {
+                mediaPlayer.prepare();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        mediaPlayer.start();
     }
 
     /**
