@@ -109,9 +109,13 @@ public class PlayActivity extends Activity {
         playSound("fire");
     }
 
+    /**
+     * Handles mMediaPlayer to make sounds easy to manage
+     * @param sound: the sound to be played. Choose from: "fire", "boom", "splash"
+     */
     private void playSound(String sound) {
         if (mMediaPlayer != null) {
-            if (mMediaPlayer.isPlaying()) {
+            if (!mMediaPlayer.isPlaying()) {
                 mMediaPlayer.release();
                 mMediaPlayer = null;
             }
