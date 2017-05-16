@@ -24,7 +24,6 @@ public class SaluteActivity extends Activity implements SensorEventListener {
     private boolean isSaluting;
     private boolean opponentSaluting;
     private MediaPlayer mediaPlayer;
-    private final long COUNTDOWN_TIME = 3000;
     private Handler mHandler;
     private Runnable rStartGame;
     private long saluteBegan;
@@ -74,7 +73,7 @@ public class SaluteActivity extends Activity implements SensorEventListener {
             //TODO: Tell opponent that you are saluting
         } else if (distance > 5) {
             isSaluting = false;
-            if(System.currentTimeMillis() - saluteBegan > COUNTDOWN_TIME && saluteBegan != 0){
+            if(System.currentTimeMillis() - saluteBegan > mediaPlayer.getDuration() && saluteBegan != 0){
                 mHandler.postDelayed(rStartGame, 500);
                 mSensorManager.unregisterListener(this);
                 saluteBegan = 0;

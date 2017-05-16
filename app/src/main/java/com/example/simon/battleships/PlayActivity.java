@@ -18,8 +18,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class PlayActivity extends Activity {
-    private Timer currentTimer = new Timer();
-    private final Handler HANDLER = new Handler();
+//    private Timer currentTimer = new Timer();
+    private Handler handler;
     private Vibrator VIBRATOR;
     private final long[] HIT_VIBRATION_PATTERN = {0, 80, 0};
     private final long[] NEAR_HIT_VIBRATION_PATTERN = {0, 40, 40}; //Delay, On-duration, Off-duration
@@ -28,7 +28,7 @@ public class PlayActivity extends Activity {
     private final int MISS_DELAY = 160;
     private boolean isVibrating = false;
     private TextView COORDS_TEXT;
-    private MediaPlayer mediaPlayer;
+    private MediaPlayer mMediaPlayer;
 
 
     @Override
@@ -38,7 +38,7 @@ public class PlayActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_play);
-        mediaPlayer = MediaPlayer.create(this, R.raw.missile_launch);
+        handler = new Handler();
 
         if (!MainActivity.TEST) {
             new ConnectionManager(this);
@@ -53,16 +53,26 @@ public class PlayActivity extends Activity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 //  COORDS_TEXT.setText("Touch at " + (int) (motionEvent.getY()/120) + ", " + (int) (motionEvent.getX()/120));
+                int x = (int) motionEvent.getX();
+                int y = (int) motionEvent.getY();
                 if (!isVibrating) {
                     int delay = 0;
-                    if (initiateVibration((int) motionEvent.getX(), (int) motionEvent.getY())) { //Typecast? //Fixa x och y
+                    if (initiateVibration(x, y)) { //Typecast? //Fixa x och y
                         delay = HIT_OR_NEAR_HIT_DELAY;
                     } else {
                         delay = MISS_DELAY;
                     }
+                    /*
                     currentTimer.schedule(new TimerTask() {
                         @Override
                         public void run() {
+                            isVibrating = false;
+                        }
+                    }, delay);
+                    */
+                    handler.postDelayed(new Runnable(){
+                        @Override
+                        public void run(){
                             isVibrating = false;
                         }
                     }, delay);
@@ -73,22 +83,55 @@ public class PlayActivity extends Activity {
                     VIBRATOR.cancel();
                     isVibrating = false;
                     launchMissile();
+                    if(GameManager.isHit(x, y) == 2){
+                        handler.postDelayed(new Runnable(){
+                            @Override
+                            public void run(){
+                                playSound("boom");
+                            }
+                        }, 3000);
+                    } else {
+                        handler.postDelayed(new Runnable(){
+                            @Override
+                            public void run(){
+                                playSound("splash");
+                            }
+                        }, 3000);
+                    }
                 }
 
                 return true;
             }
         });
     }
-    private void launchMissile(){
-        if(mediaPlayer.isPlaying()){
-            mediaPlayer.stop();
-            try {
-                mediaPlayer.prepare();
-            } catch (IOException e) {
-                e.printStackTrace();
+
+    private void launchMissile() {
+        playSound("fire");
+    }
+
+    private void playSound(String sound) {
+        if (mMediaPlayer != null) {
+            if (mMediaPlayer.isPlaying()) {
+                mMediaPlayer.release();
+                mMediaPlayer = null;
             }
         }
-        mediaPlayer.start();
+        switch (sound) {
+            case "fire":
+                mMediaPlayer = MediaPlayer.create(PlayActivity.this, R.raw.missile_launch);
+                mMediaPlayer.start();
+                break;
+            case "boom":
+                mMediaPlayer = MediaPlayer.create(PlayActivity.this, R.raw.explosion);
+                mMediaPlayer.start();
+                break;
+            case "splash":
+                mMediaPlayer = MediaPlayer.create(PlayActivity.this, R.raw.splash);
+                mMediaPlayer.start();
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -102,18 +145,45 @@ public class PlayActivity extends Activity {
         switch (GameManager.isHit(x, y)) {
             case 2:
                 VIBRATOR.vibrate(HIT_VIBRATION_PATTERN, 0);
-                COORDS_TEXT.setText("HIT!!!");
+                //COORDS_TEXT.setText("HIT!!!");
                 return true;
             case 1:
                 VIBRATOR.vibrate(NEAR_HIT_VIBRATION_PATTERN, 0);
-                COORDS_TEXT.setText("GETTING CLOSER");
+                //COORDS_TEXT.setText("GETTING CLOSER");
                 return true;
             case 0:
                 VIBRATOR.vibrate(MISS_VIBRATION_PATTERN, 0);
-                COORDS_TEXT.setText("MISS....");
+                //COORDS_TEXT.setText("MISS....");
                 return false;
             default:
                 return false;
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mMediaPlayer != null) {
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mMediaPlayer != null) {
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mMediaPlayer != null) {
+            mMediaPlayer.release();
+            mMediaPlayer = null;
         }
     }
 }
