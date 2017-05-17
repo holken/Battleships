@@ -15,6 +15,8 @@ public class GameManager {
     private static int GRID_PIXEL_WIDTH = 120;
     private static int xPos;
     private static int yPos;
+    private static int xPosOpponent;
+    private static int yPosOpponent;
 
     private static Socket client;
     private static Socket localClient;
@@ -206,17 +208,31 @@ public class GameManager {
      */
     public static void receiveCode(String code){
         if (code != null){
+        String beginning = code.substring(0,3);
+            Log.e("beginning", beginning);
 
-
-        switch(code){
+        switch(beginning){
+            //ServerClient receives con from the client that wants to connect
             case "con":     clientWrite.sendToOpponent("ack");
                 createGameActivity temp = (createGameActivity) currActivity;
                 temp.continueToNextActivity();
                 break;
+
+            //Client that connect to serverclient receives ACK to finish the connection
             case "ack":
                 joinGameActivity temp2 = (joinGameActivity) currActivity;
                 temp2.continueToNextActivity();
+                break;
+            //client sends boatCoords
+            case "plc":
+                Log.e("message", code);
+                Log.e("message", code.substring(0, code.indexOf("|")));
+                Log.e("message", code.substring(code.indexOf("|")+1));
+                xPosOpponent = Integer.parseInt(code.substring(3, code.indexOf("|")));
+                yPosOpponent = Integer.parseInt(code.substring(code.indexOf("|")+1));
 
+                Log.e("positions", "Received - position x: " + xPosOpponent + "position y: " + yPosOpponent);
+                break;
         }
         }
     }

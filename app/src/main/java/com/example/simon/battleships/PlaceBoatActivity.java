@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -77,6 +78,11 @@ public class PlaceBoatActivity extends Activity {
 
     private void readyUp() {
         GameManager.placeShip(gridX, gridY);
+        if (GameManager.hasClientSocket()){
+            GameManager.getClientWrite().sendToOpponent("plc"+ gridX + "|" + gridY);
+            Log.e("positions", "Sent - position x: " + gridX + "position y: " + gridY);
+        }
+
         hideButtons();
         spinner.setVisibility(View.VISIBLE);
         handler.postDelayed(new Runnable() {
