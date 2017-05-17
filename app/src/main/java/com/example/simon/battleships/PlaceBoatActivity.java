@@ -86,7 +86,7 @@ public class PlaceBoatActivity extends Activity {
                 PlaceBoatActivity.this.startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
-        }, 3000);
+        }, 1000);
     }
 
     private void hideButtons() {

@@ -73,8 +73,8 @@ public class SaluteActivity extends Activity implements SensorEventListener {
             //TODO: Tell opponent that you are saluting
         } else if (distance > 5) {
             isSaluting = false;
-            if(System.currentTimeMillis() - saluteBegan > mediaPlayer.getDuration() && saluteBegan != 0){
-                mHandler.postDelayed(rStartGame, 500);
+            if(System.currentTimeMillis() - saluteBegan > 3000 && saluteBegan != 0){
+                mHandler.postDelayed(rStartGame, 200);
                 mSensorManager.unregisterListener(this);
                 saluteBegan = 0;
             } else {
