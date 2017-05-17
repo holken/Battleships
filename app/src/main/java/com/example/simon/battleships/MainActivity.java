@@ -23,6 +23,7 @@ public class MainActivity extends Activity {
         Button joinButton = (Button) findViewById(R.id.joinButton);
         Button howButton = (Button) findViewById(R.id.howButton);
         Button testButton = (Button) findViewById(R.id.testButton);
+        howButton.setText("Bugged");
 
         //Calls the GameManager to set up game to match resources
         GameManager.initializeGame(getResources().getDisplayMetrics().widthPixels / 9);
@@ -33,18 +34,24 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), createGameActivity.class);
                 startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
         joinButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), joinGameActivity.class);
                 startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
         howButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), howToPlayActivity.class);
+                //Jag vill gå till PlayActivity utan att behöva gå igenom allt skit först. Dock buggar denna, vet inte varför
+                GameManager.clearGrid();
+                //GameManager.placeShip((int) Math.random()*9, (int) Math.random()*16);
+                Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
                 startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
         //TESTING PURPOSES
@@ -53,6 +60,7 @@ public class MainActivity extends Activity {
                 TEST = true;
                 Intent intent = new Intent(v.getContext(), PlaceBoatActivity.class);
                 startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
     }

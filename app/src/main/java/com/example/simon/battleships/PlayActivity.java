@@ -18,7 +18,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class PlayActivity extends Activity {
-//    private Timer currentTimer = new Timer();
+    //    private Timer currentTimer = new Timer();
     private Handler handler;
     private Vibrator VIBRATOR;
     private final long[] HIT_VIBRATION_PATTERN = {0, 80, 0};
@@ -27,7 +27,6 @@ public class PlayActivity extends Activity {
     private final int HIT_OR_NEAR_HIT_DELAY = 80;
     private final int MISS_DELAY = 160;
     private boolean isVibrating = false;
-    private TextView COORDS_TEXT;
     private MediaPlayer mMediaPlayer;
 
 
@@ -43,9 +42,7 @@ public class PlayActivity extends Activity {
         if (!MainActivity.TEST) {
             new ConnectionManager(this);
         }
-
         final ConstraintLayout LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
-        COORDS_TEXT = (TextView) findViewById(R.id.Coordinates);
         VIBRATOR = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         LAYOUT.setOnTouchListener(new View.OnTouchListener() {
@@ -59,41 +56,30 @@ public class PlayActivity extends Activity {
                     int delay = 0;
                     if (initiateVibration(x, y)) { //Typecast? //Fixa x och y
                         delay = HIT_OR_NEAR_HIT_DELAY;
-                    } else {
-                        delay = MISS_DELAY;
-                    }
-                    /*
-                    currentTimer.schedule(new TimerTask() {
+                    } else delay = MISS_DELAY;
+                    handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             isVibrating = false;
                         }
                     }, delay);
-                    */
-                    handler.postDelayed(new Runnable(){
-                        @Override
-                        public void run(){
-                            isVibrating = false;
-                        }
-                    }, delay);
                     isVibrating = true;
                 }
-
                 if (motionEvent.getAction() == android.view.MotionEvent.ACTION_UP) {
                     VIBRATOR.cancel();
                     isVibrating = false;
                     launchMissile();
-                    if(GameManager.isHit(x, y) == 2){
-                        handler.postDelayed(new Runnable(){
+                    if (GameManager.isHit(x, y) == 2) {
+                        handler.postDelayed(new Runnable() {
                             @Override
-                            public void run(){
+                            public void run() {
                                 playSound("boom");
                             }
                         }, 3000);
                     } else {
-                        handler.postDelayed(new Runnable(){
+                        handler.postDelayed(new Runnable() {
                             @Override
-                            public void run(){
+                            public void run() {
                                 playSound("splash");
                             }
                         }, 3000);
@@ -111,14 +97,15 @@ public class PlayActivity extends Activity {
 
     /**
      * Handles mMediaPlayer to make sounds easy to manage
+     *
      * @param sound: the sound to be played. Choose from: "fire", "boom", "splash"
      */
     private void playSound(String sound) {
         if (mMediaPlayer != null) {
-            if (!mMediaPlayer.isPlaying()) {
-                mMediaPlayer.release();
-                mMediaPlayer = null;
-            }
+            //if(!mMediaPlayer.isPlaying()) {   //This enables sounds to overlap, but crashes the media player after a while. Probably something to do with MediaPlayer.create()
+                mMediaPlayer.release();         // returning a new instance of media player each time, leaving the old one unreleased. Could be fixed with some effort but
+                mMediaPlayer = null;            // once cooldowns are implemented this will not matter
+            //}
         }
         switch (sound) {
             case "fire":

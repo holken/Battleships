@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 public class PlaceBoatActivity extends Activity {
     private ImageView imageView;
@@ -19,6 +20,7 @@ public class PlaceBoatActivity extends Activity {
     private Handler handler;
     private Button upperReadyButton;
     private Button lowerReadyButton;
+    private TextView textView;
     private int gridX;
     private int gridY;
 
@@ -29,7 +31,8 @@ public class PlaceBoatActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_boat_placing);
         imageView = (ImageView) findViewById(R.id.boatImage);
-        spinner = (ProgressBar)findViewById(R.id.progressBar);
+        textView = (TextView) findViewById(R.id.placeBoatText);
+        spinner = (ProgressBar) findViewById(R.id.progressBar);
         spinner.setVisibility(View.GONE);
         handler = new Handler();
         upperReadyButton = (Button) findViewById(R.id.upperReadyButton);
@@ -44,6 +47,7 @@ public class PlaceBoatActivity extends Activity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    textView.setVisibility(View.INVISIBLE);
                     placeShipImage((int) motionEvent.getX(), (int) motionEvent.getY());
                     showReadyButton((int) motionEvent.getY());
                 }
@@ -52,9 +56,9 @@ public class PlaceBoatActivity extends Activity {
         });
     }
 
-    private void showReadyButton(int y){
+    private void showReadyButton(int y) {
         hideButtons();
-        if(y > 1920/2){
+        if (y > 1920 / 2) {
             upperReadyButton.setVisibility(View.VISIBLE);
             upperReadyButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -71,7 +75,7 @@ public class PlaceBoatActivity extends Activity {
         }
     }
 
-    private void readyUp(){
+    private void readyUp() {
         GameManager.placeShip(gridX, gridY);
         hideButtons();
         spinner.setVisibility(View.VISIBLE);
@@ -85,7 +89,7 @@ public class PlaceBoatActivity extends Activity {
         }, 3000);
     }
 
-    private void hideButtons(){
+    private void hideButtons() {
         upperReadyButton.setVisibility(View.GONE);
         upperReadyButton.setOnClickListener(null);
         lowerReadyButton.setVisibility(View.GONE);

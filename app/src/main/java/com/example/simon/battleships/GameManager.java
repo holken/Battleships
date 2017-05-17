@@ -1,7 +1,7 @@
 package com.example.simon.battleships;
 
 public class GameManager {
-    private static int[][] grid =  new int[9][16];
+    private static int[][] grid = new int[9][16];
     private static final int HIT = 2;
     private static final int NEAR_HIT = 1;
     private static int GRID_PIXEL_WIDTH = 120;
@@ -18,8 +18,8 @@ public class GameManager {
 
     /**
      * Places the ship on specified x and y coordinates and sets adjacent tiles to near hits
-     * @param x X-coordinate for ship
-     * @param y Y-coordinate for ship
+     * @param x X-coordinate for ship, between 0-8
+     * @param y Y-coordinate for ship, between 0-15
      */
     public static void placeShip(int x, int y) {
         xPos = x;
@@ -32,6 +32,14 @@ public class GameManager {
             }
         }
         grid[x][y] = HIT;
+    }
+
+    public static void clearGrid(){
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 16; j++){
+                grid[i][j] = 0;
+            }
+        }
     }
 
     /**
