@@ -27,12 +27,12 @@ public class ConnectionActivity extends AppCompatActivity {
     Client client;
     Host host;
     SocketHandler socketHandler;
-
+/*
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connection);
-/*
+
         mManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         mWifiInfo = mManager.getConnectionInfo();
         ipTextView = (TextView) findViewById(R.id.ipAddress);
@@ -43,8 +43,8 @@ public class ConnectionActivity extends AppCompatActivity {
         ip = String.format("%d.%d.%d.%d", (ipAddress & 0xff),(ipAddress >> 8 & 0xff),(ipAddress >> 16 & 0xff),(ipAddress >> 24 & 0xff));
         ipTextView.setText("Your Ip: " + ip);
 
-        host = new Host(this);
-        host.execute();
+       // host = new Host(this);
+       // host.execute();
 
 
         connectButton.setOnClickListener(new View.OnClickListener() {
@@ -86,8 +86,8 @@ public class ConnectionActivity extends AppCompatActivity {
 
                 if (host.clientHasConnected()){
                     int SDK_INT = android.os.Build.VERSION.SDK_INT;
-                    */
-                   /* if (SDK_INT > 8)
+
+                    if (SDK_INT > 8)
                     {
                         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                                 .permitAll().build();
@@ -96,15 +96,15 @@ public class ConnectionActivity extends AppCompatActivity {
                         Log.d("fish", "before execute");
                         client.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, ipEnter.getText().toString());
 
-                    }*/
+                    }
 
                     //socketHandler.setClientSocket(host.client);
                     //socketHandler.setHostSocket(host.hostSocket);
-                   /* Intent intent = new Intent(v.getContext(), PlayActivity.class);
+                   /Intent intent = new Intent(v.getContext(), PlayActivity.class);
                     startActivity(intent);
                 }
 
             }
-        });*/
-    }
+        });
+    }*/
 }

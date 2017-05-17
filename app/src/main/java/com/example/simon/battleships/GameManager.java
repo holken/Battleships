@@ -1,12 +1,28 @@
 package com.example.simon.battleships;
 
-public class GameManager {
+import android.app.Activity;
+
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Observable;
+import java.util.Observer;
+
+public class GameManager implements Observer {
     private static int[][] grid = new int[9][16];
     private static final int HIT = 2;
     private static final int NEAR_HIT = 1;
     private static int GRID_PIXEL_WIDTH = 120;
     private static int xPos;
     private static int yPos;
+
+    private static Socket client;
+    private static Socket localClient;
+    private static ServerSocket host;
+    private static ClientRead clientRead;
+    private static ClientObservable clientObservable;
+    private static ClientWrite clientWrite;
+    private static String message;
+    private static Activity currActivity;
 
     /**
      * Sets up game to match resources
@@ -60,4 +76,143 @@ public class GameManager {
     }
     public static int getShipX(){ return xPos; }
     public static int getShipY(){ return yPos; }
+
+    /**
+     *
+     * @return Socket of the opponent
+     */
+    public static synchronized Socket getClientSocket(){
+        return client;
+    }
+
+    /**
+     *
+     * @return Socket of this player
+     */
+    public static synchronized Socket getLocalClientSocket(){
+        return localClient;
+    }
+
+    /**
+     * Sets the socket for the opponent player
+     * @param socket for the opponent
+     */
+    public static synchronized void setClientSocket(Socket socket){
+        client = socket;
+    }
+
+    /**
+     * Sets the socket for this player
+     * @param socket for this player
+     */
+    public static synchronized void setLocalClientSocket(Socket socket){
+        localClient = socket;
+    }
+
+    /**
+     * Returns the serversocket
+     * @return ServerSocket
+     */
+    public static synchronized ServerSocket getHostSocket(){
+        return host;
+    }
+
+    /**
+     * Sets the HostSocket
+     * @param socket that acts like server
+     */
+    public static synchronized void setHostSocket(ServerSocket socket){
+        host = socket;
+    }
+
+    public static boolean hasHostSocket(){
+        if (host == null){
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean hasClientSocket(){
+        if (client == null){
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean hasLocalClientSocket(){
+        if (localClient == null){
+            return false;
+        }
+        return true;
+    }
+
+    public static synchronized ClientRead getClientRead(){
+        return clientRead;
+    }
+
+    public static synchronized ClientWrite getClientWrite(){
+        return clientWrite;
+    }
+
+    public static synchronized void setClientRead(ClientRead clientR){
+        clientRead = clientR;
+    }
+
+    public static synchronized void setClientWrite(ClientWrite clientW){
+        clientWrite = clientW;
+    }
+
+    public static synchronized ClientObservable getClientObservable(){
+        return clientObservable;
+    }
+
+    public static synchronized void setClientObservable(ClientObservable clientO){
+        clientObservable = clientO;
+    }
+
+    public static boolean hasClientRead(){
+        if (clientRead == null){
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean hasClientWrite(){
+        if (clientWrite == null){
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean hasLocalClientObservable(){
+        if (clientObservable == null){
+            return false;
+        }
+        return true;
+    }
+
+    public static void setActivity(Activity activity){
+        currActivity = activity;
+    }
+
+    public static Activity getActivity(){
+        return currActivity;
+    }
+
+
+    public void update(Observable o, Object arg) {
+        message = ((ClientObservable) o).getMessage();
+
+        switch(message){
+            //Client has connected
+            case "con":     clientWrite.sendToOpponent("ack");
+                createGameActivity temp = (createGameActivity) currActivity;
+                 temp.setCode("con");
+                break;
+            case "ack":
+        }
+
+
+    }
+
 }

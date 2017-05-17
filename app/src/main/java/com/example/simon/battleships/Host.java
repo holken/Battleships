@@ -31,114 +31,43 @@ public class Host extends AsyncTask<Void, Void, Socket> {
         createAct = createGame;
     }
 
-
+    /**
+     *  Creates server socket, waits for opponent to connect and adds the opponents socket to the GameManager
+     */
     protected Socket doInBackground(Void... voids) {
 
         try {
             hostSocket = new ServerSocket(4001);
-            SocketHandler.setHostSocket(hostSocket);
+            GameManager.setHostSocket(hostSocket);
             while (loop){
 
                 try {
-
-                    Log.e("fish", "before accepted first client");
                     client = hostSocket.accept();
-                    SocketHandler.setClientSocket(client);
-                    Log.e("fish", "accepted first client. " + client.toString());
-                    client2 = hostSocket.accept();
-                    SocketHandler.setLocalClientSocket(client2);
-
-
-                    OutputStream out = client.getOutputStream();
-                    createAct.setHasConnected();
-                    run();
+                    GameManager.setClientSocket(client);
+                    ClientObservable clientObservable = new ClientObservable();
+                    ClientRead clientRead = new ClientRead(client, clientObservable);
+                    ClientWrite clientWrite = new ClientWrite(client);
+                    clientWrite.start();
+                    GameManager.setClientObservable(clientObservable);
+                    GameManager.setClientRead(clientRead);
+                    GameManager.setClientWrite(clientWrite);
                 } catch (IOException e){
                     e.printStackTrace();
                 }
+                hostSocket.close();
             }
-            hostSocket.close();
+
         } catch (IOException e) {
 
             e.printStackTrace();
         }
-        return client2;
+        return client;
     }
 
     protected void onPostExecute() {
 
     }
-/*
-    public void start(){
-        ServerSocket server;
-        try {
-            server = new ServerSocket(40000);
-            while (loop){
-
-                try {
-                    client = server.accept();
-                    client2 = server.accept();
-                    OutputStream out = client.getOutputStream();
-
-                    run();
-                } catch (IOException e){
-                    e.printStackTrace();
-                }
-            }
-            server.close();
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
 
     }
 
-*/
-    public boolean clientHasConnected() {
-        if (client != null){
-            return true;
-            }
-            return false;
-    }
-
-
-    public void run(){
-
-        InputStream input1;
-        OutputStream output1;
-        InputStream input2;
-        OutputStream output2;
-
-        while (loop) {
-
-            try {
-
-                input1 = client.getInputStream();
-                output1 = client.getOutputStream();
-                input2 = client2.getInputStream();
-                output2 = client2.getOutputStream();
-
-
-                output1 = new BufferedOutputStream(output1);
-                output2 = new BufferedOutputStream(output2);
-                input1 = new BufferedInputStream(input1);
-                input2 = new BufferedInputStream(input2);
-                InputStreamReader readerlol1 = new InputStreamReader(input1);
-                InputStreamReader readerlol2 = new InputStreamReader(input2);
-                BufferedReader reader1 = new BufferedReader(readerlol1);
-                BufferedReader reader2 = new BufferedReader(readerlol2);
-
-                Thread.sleep(1000);
-
-                //client.close();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (InterruptedException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-        }
-
-    }
-    }
 

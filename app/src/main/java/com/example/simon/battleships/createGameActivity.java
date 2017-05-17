@@ -1,20 +1,25 @@
 package com.example.simon.battleships;
 
+import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class createGameActivity extends AppCompatActivity {
+import java.util.Observable;
+import java.util.Observer;
+
+public class createGameActivity extends AppCompatActivity  {
 
     Host host;
     SocketHandler socketHandler;
-    static TextView statusText;
+    TextView statusText;
     TextView ipText;
     WifiManager mManager;
     WifiInfo mWifiInfo;
     String ip;
+    String code;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,24 +34,27 @@ public class createGameActivity extends AppCompatActivity {
 
         host = new Host(this);
         host.execute();
-        socketHandler = new SocketHandler();
+
         statusText = (TextView) findViewById(R.id.statusText);
 
-        /*while (!socketHandler.hasClientSocket()){
+        while (!code.equals("con")){
 
             try {
-                Thread.sleep(500);
+                Thread.sleep(250);
             } catch (Exception e){
 
             }
+
         }
-
-        statusText.setText(socketHandler.getClientSocket().toString() + " has connected");*/
-
+        Intent intent = new Intent(this, PlayActivity.class);
+        startActivity(intent);
 
     }
 
-    public static synchronized void setHasConnected(){
-        statusText.setText(SocketHandler.getClientSocket().toString() + " has connected");
+    public void setCode(String code){
+        this.code = code;
     }
-}
+
+    }
+
+

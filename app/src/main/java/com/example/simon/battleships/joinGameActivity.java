@@ -17,6 +17,7 @@ public class joinGameActivity extends AppCompatActivity {
     SocketHandler socketHandler;
     Client client;
     TextView clientStatusText;
+    String code;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,32 +39,27 @@ public class joinGameActivity extends AppCompatActivity {
                                 .permitAll().build();
                         StrictMode.setThreadPolicy(policy);
                         client = new Client(ipEnter.getText().toString());
-                        Log.d("fish", "before execute");
                         client.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, ipEnter.getText().toString());
 
                     }
 
+                }
 
-                    socketHandler.setClientSocket(client.socket);
+
+                while (!code.equals("ack")){
+
+                    try {
+                        GameManager.getClientWrite().sendToOpponent("con");
+                        Thread.sleep(250);
+                    } catch (Exception e2){
+
+                    }
 
                 }
-                try {
-                    Thread.sleep(500);
-                } catch (Exception e){
-
-                }/*
-                while(!socketHandler.hasClientSocket()){
-
-                }
-                */
-                if (socketHandler.getClientSocket() != null)
-                    clientStatusText.setText("connected to: " + socketHandler.getClientSocket().toString());
-
-                Intent intent = new Intent(v.getContext(), PlayActivity.class);
+                Intent intent = new Intent(v.getContext(), PlaceBoatActivity.class);
                 startActivity(intent);
-
-
             }
         });
     }
 }
+

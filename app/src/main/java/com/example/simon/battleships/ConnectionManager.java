@@ -9,8 +9,8 @@ public class ConnectionManager {
 
     public ConnectionManager(PlayActivity activity) {
         socketHandler = new SocketHandler();
-        receiver = new ClientRead (SocketHandler.getClientSocket(), 4001, activity);
-        sender = new ClientWrite(SocketHandler.getClientSocket(), 4001, activity);
+       // receiver = new ClientRead (SocketHandler.getClientSocket(), 4001, activity);
+        //sender = new ClientWrite(SocketHandler.getClientSocket(), 4001, activity);
 
         receiver.start();
         sender.start();

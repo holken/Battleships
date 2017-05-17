@@ -34,19 +34,15 @@ import java.util.Random;
         try {
             address = InetAddress.getByName(ipAddress);
             try {
-                //Random rand = new Random();
-                //int nmr = rand.nextInt(4000);
-                int nmr = 4001;
                 socket = new Socket(address, 4001);
-                SocketHandler.setClientSocket(socket);
-                Log.e("clientCon", socket.toString());
-                //t1 = new ClientRead(socket, nmr);
-                //t2 = new ClientWrite(socket, nmr);
-                //t1.start();
-                //t2.start();
-                while (true){
-
-                }
+                GameManager.setClientSocket(socket);
+                ClientObservable clientObservable = new ClientObservable();
+                ClientRead clientRead = new ClientRead(socket, clientObservable);
+                ClientWrite clientWrite = new ClientWrite(socket);
+                clientWrite.start();
+                GameManager.setClientObservable(clientObservable);
+                GameManager.setClientRead(clientRead);
+                GameManager.setClientWrite(clientWrite);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -60,48 +56,7 @@ import java.util.Random;
     protected void onPostExecute() {
 
     }
-/*
-        public void run(){
-            InetAddress address = null;
-            Log.d("fish", "before try");
-            try {
-                address = InetAddress.getByName(ipAddress);
-                Log.d("fish", "before try");
-                try {
-                    //Random rand = new Random();
-                    //int nmr = rand.nextInt(4000);
-                    int nmr = 4000;
-                    Log.d("fish", address.toString());
-                    socket = new Socket(address, 4000);
-                    Log.d("fish", socket.toString());
-                    t1 = new ClientRead(socket, nmr);
-                    t2 = new ClientWrite(socket, nmr);
-                    t1.start();
-                    t2.start();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
-            } catch (UnknownHostException e1) {
-                e1.printStackTrace();
-            }
-        }*/
-
-        public ClientRead getReaderThread(){
-            return t1;
-        }
-
-        public synchronized void setText(String text){
-            t2.setText(text);
-
-        }
-
-        public boolean checkConnection(){
-            if (socket != null){
-                return socket.isConnected();
-            }
-            return false;
-        }
 
     }
 

@@ -19,8 +19,6 @@ public class ClientWrite extends Thread{
     Socket socket;
     Socket matchedClient;
     boolean hasTextToWrite = false;
-    PlayActivity activity;
-    int nmr;
     String text = "";
 
     InputStreamReader input;
@@ -28,10 +26,9 @@ public class ClientWrite extends Thread{
     OutputStream output;
     PrintWriter writer;
 
-    public ClientWrite(Socket socket, int nmr, PlayActivity activity){
+    public ClientWrite(Socket socket){
         this.socket = socket;
-        this.nmr = nmr;
-        this.activity = activity;
+
         try {
             input = new InputStreamReader(socket.getInputStream());
             buffReader = new BufferedReader(input);
@@ -42,70 +39,16 @@ public class ClientWrite extends Thread{
         }
     }
 
-    private boolean hasSomethingToWrite(){
-        return hasTextToWrite;
-    }
-
-    public void setWriteStatus(boolean bool){
-        hasTextToWrite = bool;
-    }
-
-
-
-    public String parseString(String text){
-        text = text.substring(3);
-        return text;
-    }
-
-    public synchronized void setText(String text){
-        this.text = text;
-        notifyAll();
-    }
-
-    private synchronized void sendText(PrintWriter writer){
-        while (text == "") {
-            try {
-                wait();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        writer.println(text);
-        writer.flush();
-        text = "";
-    }
-
-    public void run(){
-        try {
-            //input = new InputStreamReader(socket.getInputStream());
-            //buffReader = new BufferedReader(input);
-            //output = socket.getOutputStream();
-            //writer = new PrintWriter(output);
-
-            while (!socket.isClosed()) {
-                sendText(writer);
-            }
-
-
-            socket.close();
-
-        } catch (IOException e) {
-
-        }
-    }
 
     public void sendRandomCoords(){
         //initialize startingposition
         Random rand = new Random();
         int xCoord = rand.nextInt(16);
         int yCoord = rand.nextInt(9);
-        Log.e ("fish", "Writer placing boat: " + "PB" + xCoord + "|" + yCoord);
         writer.println("PB" + xCoord + "|" + yCoord);
     }
 
     public void sendToOpponent(String word){
-        Log.e ("fish4", "writing to opponent: " + word);
-        writer.println("AK");
+        writer.println(word);
     }
 }

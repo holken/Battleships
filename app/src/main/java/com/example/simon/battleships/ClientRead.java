@@ -7,51 +7,41 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.Observable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by simon on 2017-04-29.
  */
 
-public class ClientRead extends Thread {
+public class ClientRead extends Thread  {
 
     Socket socket;
-    int nmr;
-    PlayActivity activity;
-
     InputStream input;
-
     InputStreamReader reader;
     BufferedReader buffReader;
+    ClientObservable clientObservable;
 
     public volatile AtomicBoolean haveReceviedCoords = new AtomicBoolean(false);
 
     public volatile AtomicBoolean haveReceivedAK = new AtomicBoolean(false);
 
-    public ClientRead(Socket socket, int nmr, PlayActivity activity) {
+    public ClientRead(Socket socket, ClientObservable clientObservable) {
         this.socket = socket;
-        this.nmr = nmr;
-        this.activity = activity;
+        this.clientObservable = clientObservable;
     }
 
     public void run() {
         try {
             input = socket.getInputStream();
-            Log.e("fish3", socket.toString());
             reader = new InputStreamReader(input);
             buffReader = new BufferedReader(reader);
             String character;
 
             while (!socket.isClosed()) {
                 character = buffReader.readLine();
-                Log.e("fish2", character);
-                if (character.startsWith("PB")) {
-                    updateShipPosition(character.substring(2));
-                } else if (character.startsWith("AK")) {
-                    haveReceivedAK.set(true);
-                } else if (character.startsWith("CON")) {
+                clientObservable.changeMessage(character);
 
-                }
             }
             socket.close();
 
