@@ -1,13 +1,14 @@
 package com.example.simon.battleships;
 
 import android.app.Activity;
+import android.util.Log;
 
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
 
-public class GameManager implements Observer {
+public class GameManager {
     private static int[][] grid = new int[9][16];
     private static final int HIT = 2;
     private static final int NEAR_HIT = 1;
@@ -199,20 +200,41 @@ public class GameManager implements Observer {
         return currActivity;
     }
 
+    /**
+     * Method that is called from clientWrite when it receives a message which it then forward to this method which handle what to do with the information
+     * @param code is the message received from clientWrite
+     */
+    public static void receiveCode(String code){
+        if (code != null){
 
-    public void update(Observable o, Object arg) {
-        message = ((ClientObservable) o).getMessage();
 
-        switch(message){
-            //Client has connected
+        switch(code){
             case "con":     clientWrite.sendToOpponent("ack");
                 createGameActivity temp = (createGameActivity) currActivity;
-                 temp.setCode("con");
+                temp.continueToNextActivity();
+                break;
+            case "ack":
+                joinGameActivity temp2 = (joinGameActivity) currActivity;
+                temp2.continueToNextActivity();
+
+        }
+        }
+    }
+
+    /*
+    public void update(Observable o, Object arg) {
+        message = ((ClientObservable) o).getMessage();
+        Log.e("con", "inside update");
+        switch(message){
+            //Client has connected
+
+            case "con":     clientWrite.sendToOpponent("ack");
+                createGameActivity temp = (createGameActivity) currActivity;
+                 temp.continueToNextActivity();
                 break;
             case "ack":
         }
-
-
     }
+    */
 
 }

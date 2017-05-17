@@ -39,8 +39,11 @@ public class ClientRead extends Thread  {
             String character;
 
             while (!socket.isClosed()) {
+                Log.e("con", "Has entered while loop in clientRead");
                 character = buffReader.readLine();
-                clientObservable.changeMessage(character);
+                Log.e("con", "ClientRead read: " + character);
+                //clientObservable.changeMessage(character);
+                GameManager.receiveCode(character);
 
             }
             socket.close();

@@ -40,6 +40,7 @@ import java.util.Random;
                 ClientRead clientRead = new ClientRead(socket, clientObservable);
                 ClientWrite clientWrite = new ClientWrite(socket);
                 clientWrite.start();
+                clientRead.start();
                 GameManager.setClientObservable(clientObservable);
                 GameManager.setClientRead(clientRead);
                 GameManager.setClientWrite(clientWrite);

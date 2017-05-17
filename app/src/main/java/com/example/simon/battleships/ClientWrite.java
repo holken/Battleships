@@ -49,6 +49,8 @@ public class ClientWrite extends Thread{
     }
 
     public void sendToOpponent(String word){
+        Log.e("con", "clientWrite writes to opponent this message: " + word);
         writer.println(word);
+        writer.flush();
     }
 }

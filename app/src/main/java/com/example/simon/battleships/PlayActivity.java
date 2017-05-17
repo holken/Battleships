@@ -39,9 +39,9 @@ public class PlayActivity extends Activity {
         setContentView(R.layout.activity_play);
         handler = new Handler();
 
-        if (!MainActivity.TEST) {
+        /*if (!MainActivity.TEST) {
             new ConnectionManager(this);
-        }
+        }*/
         final ConstraintLayout LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
         VIBRATOR = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 

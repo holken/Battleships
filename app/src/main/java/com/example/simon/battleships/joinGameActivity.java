@@ -23,10 +23,10 @@ public class joinGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_game);
         clientStatusText = (TextView) findViewById(R.id.clientStatusText);
-        socketHandler = new SocketHandler();
         ipEnter = (EditText) findViewById(R.id.ipEnter);
+        code = "";
         connectButton = (Button) findViewById(R.id.findHostButton);
-
+        GameManager.setActivity(this);
         connectButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
@@ -45,21 +45,22 @@ public class joinGameActivity extends AppCompatActivity {
 
                 }
 
-
-                while (!code.equals("ack")){
-
-                    try {
-                        GameManager.getClientWrite().sendToOpponent("con");
-                        Thread.sleep(250);
-                    } catch (Exception e2){
-
-                    }
+                try {
+                    Thread.sleep(500);
+                } catch (Exception e){
 
                 }
-                Intent intent = new Intent(v.getContext(), PlaceBoatActivity.class);
-                startActivity(intent);
+
+                        GameManager.getClientWrite().sendToOpponent("con");
+
             }
         });
+    }
+
+    public void continueToNextActivity(){
+        Intent intent = new Intent(this, PlaceBoatActivity.class);
+        startActivity(intent);
+
     }
 }
 

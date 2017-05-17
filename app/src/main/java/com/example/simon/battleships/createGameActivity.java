@@ -5,6 +5,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import java.util.Observable;
@@ -24,35 +25,30 @@ public class createGameActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_game);
-
+        code = "";
         ipText = (TextView) findViewById(R.id.ipText);
         mManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         mWifiInfo = mManager.getConnectionInfo();
         int ipAddress = mWifiInfo.getIpAddress();
         ip = String.format("%d.%d.%d.%d", (ipAddress & 0xff),(ipAddress >> 8 & 0xff),(ipAddress >> 16 & 0xff),(ipAddress >> 24 & 0xff));
         ipText.setText("Your Ip: " + ip);
-
+        GameManager.setActivity(this);
         host = new Host(this);
         host.execute();
 
         statusText = (TextView) findViewById(R.id.statusText);
 
-        while (!code.equals("con")){
 
-            try {
-                Thread.sleep(250);
-            } catch (Exception e){
-
-            }
-
-        }
-        Intent intent = new Intent(this, PlayActivity.class);
-        startActivity(intent);
+        //Intent intent = new Intent(this, PlayActivity.class);
+        //startActivity(intent);
 
     }
 
-    public void setCode(String code){
-        this.code = code;
+    public void continueToNextActivity(){
+        Log.e("con", "inside ContinueToNextActivity");
+        Intent intent = new Intent(this, PlaceBoatActivity.class);
+        startActivity(intent);
+
     }
 
     }

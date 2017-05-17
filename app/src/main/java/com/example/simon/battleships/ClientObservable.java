@@ -1,5 +1,7 @@
 package com.example.simon.battleships;
 
+import android.util.Log;
+
 import java.util.Observable;
 
 /**
@@ -16,6 +18,7 @@ public class ClientObservable extends Observable {
 
     public void changeMessage(String message) {
         this.message = message;
+        Log.e("con", "clientObserver received: " + message);
         setChanged();
         notifyObservers(message);
     }
