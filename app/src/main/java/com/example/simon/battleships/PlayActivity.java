@@ -163,6 +163,7 @@ public class PlayActivity extends Activity {
     @Override
     public void onStop() {
         super.onStop();
+        GameManager.clearGrid();
         if (mMediaPlayer != null) {
             mMediaPlayer.release();
             mMediaPlayer = null;
