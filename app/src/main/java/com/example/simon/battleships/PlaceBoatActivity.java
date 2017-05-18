@@ -77,10 +77,11 @@ public class PlaceBoatActivity extends Activity {
     }
 
     private void readyUp() {
-        GameManager.placeShip(gridX, gridY);
         if (GameManager.hasClientSocket()){
-            GameManager.getClientWrite().sendToOpponent("plc"+ gridX + "|" + gridY);
+            GameManager.send("plc"+ gridX + "|" + gridY);
             Log.e("positions", "Sent - position x: " + gridX + "position y: " + gridY);
+        } else {
+            Log.e("ReadyUp fail", "Has no client socket.");
         }
 
         hideButtons();
@@ -88,6 +89,7 @@ public class PlaceBoatActivity extends Activity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                Log.e("Continuing to Salute", "Trying to reach salute from place boat.");
                 Intent intent = new Intent(PlaceBoatActivity.this, SaluteActivity.class);
                 PlaceBoatActivity.this.startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

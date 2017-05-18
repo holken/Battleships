@@ -38,12 +38,9 @@ import java.util.Random;
                 GameManager.setClientSocket(socket);
                 ClientObservable clientObservable = new ClientObservable();
                 ClientRead clientRead = new ClientRead(socket, clientObservable);
-                ClientWrite clientWrite = new ClientWrite(socket);
-                clientWrite.start();
                 clientRead.start();
                 GameManager.setClientObservable(clientObservable);
                 GameManager.setClientRead(clientRead);
-                GameManager.setClientWrite(clientWrite);
             } catch (IOException e) {
                 e.printStackTrace();
             }

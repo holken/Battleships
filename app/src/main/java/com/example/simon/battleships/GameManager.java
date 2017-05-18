@@ -27,12 +27,17 @@ public class GameManager {
     private static String message;
     private static Activity currActivity;
 
+    private static boolean saluting;
+    private static boolean opponentSaluting;
+
     /**
      * Sets up game to match resources
      * @param gridPixelWidth
      */
     public static void initializeGame(int gridPixelWidth) {
         GRID_PIXEL_WIDTH = gridPixelWidth;
+        opponentSaluting = false;
+        saluting = false;
     }
 
     /**
@@ -153,8 +158,11 @@ public class GameManager {
         return clientRead;
     }
 
-    public static synchronized ClientWrite getClientWrite(){
-        return clientWrite;
+    public static synchronized void send(String message) {
+        Log.e("Trying to send ", message);
+        clientWrite = new ClientWrite(client, message);
+        Log.e("Starting Thread", "");
+        clientWrite.start();
     }
 
     public static synchronized void setClientRead(ClientRead clientR){
@@ -213,7 +221,8 @@ public class GameManager {
 
         switch(beginning){
             //ServerClient receives con from the client that wants to connect
-            case "con":     clientWrite.sendToOpponent("ack");
+            case "con":
+                send("ack");
                 createGameActivity temp = (createGameActivity) currActivity;
                 temp.continueToNextActivity();
                 break;
@@ -230,11 +239,29 @@ public class GameManager {
                 Log.e("message", code.substring(code.indexOf("|")+1));
                 xPosOpponent = Integer.parseInt(code.substring(3, code.indexOf("|")));
                 yPosOpponent = Integer.parseInt(code.substring(code.indexOf("|")+1));
+                placeShip(xPosOpponent, yPosOpponent);
 
                 Log.e("positions", "Received - position x: " + xPosOpponent + "position y: " + yPosOpponent);
                 break;
+            //Opponent has begun saluting
+            case "slt":
+                opponentSaluting = true;
+                beginSalute();
+                break;
+            case "fire":
+                break;
+            default:
+                break;
         }
         }
+    }
+
+    public static boolean beginSalute(){
+        return false;
+    }
+
+    public static void setSaluting(Boolean b){
+        saluting = b;
     }
 
     /*

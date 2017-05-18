@@ -18,6 +18,7 @@ public class joinGameActivity extends AppCompatActivity {
     Client client;
     TextView clientStatusText;
     String code;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,11 +31,10 @@ public class joinGameActivity extends AppCompatActivity {
         connectButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                if (!ipEnter.getText().equals("")){
+                if (!ipEnter.getText().equals("")) {
 
                     int SDK_INT = android.os.Build.VERSION.SDK_INT;
-                    if (SDK_INT > 8)
-                    {
+                    if (SDK_INT > 8) {
                         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                                 .permitAll().build();
                         StrictMode.setThreadPolicy(policy);
@@ -47,17 +47,17 @@ public class joinGameActivity extends AppCompatActivity {
 
                 try {
                     Thread.sleep(500);
-                } catch (Exception e){
+                } catch (Exception e) {
 
                 }
 
-                        GameManager.getClientWrite().sendToOpponent("con");
+                GameManager.send("con");
 
             }
         });
     }
 
-    public void continueToNextActivity(){
+    public void continueToNextActivity() {
         Intent intent = new Intent(this, PlaceBoatActivity.class);
         startActivity(intent);
 

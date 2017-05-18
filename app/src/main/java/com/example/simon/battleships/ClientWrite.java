@@ -14,8 +14,8 @@ import java.util.Random;
  * Created by simon on 2017-04-29.
  */
 
-public class ClientWrite extends Thread{
-
+public class ClientWrite extends Thread {
+    private String message;
     Socket socket;
     Socket matchedClient;
     boolean hasTextToWrite = false;
@@ -26,31 +26,28 @@ public class ClientWrite extends Thread{
     OutputStream output;
     PrintWriter writer;
 
-    public ClientWrite(Socket socket){
+    public ClientWrite(Socket socket, String message) {
         this.socket = socket;
-
+        this.message = message;
         try {
             input = new InputStreamReader(socket.getInputStream());
             buffReader = new BufferedReader(input);
             output = socket.getOutputStream();
             writer = new PrintWriter(output);
-        } catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
 
-
-    public void sendRandomCoords(){
-        //initialize startingposition
-        Random rand = new Random();
-        int xCoord = rand.nextInt(16);
-        int yCoord = rand.nextInt(9);
-        writer.println("PB" + xCoord + "|" + yCoord);
-    }
-
-    public void sendToOpponent(String word){
-        Log.e("con", "clientWrite writes to opponent this message: " + word);
-        writer.println(word);
-        writer.flush();
+    @Override
+    public void run() {
+        if (!message.equals("")) {
+            Log.e("con", "clientWrite writes to opponent this message: " + message);
+            writer.println(message);
+            writer.flush();
+        } else {
+            Log.e("No message", "Nothing to send.");
+        }
+        message = "";
     }
 }

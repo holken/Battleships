@@ -46,12 +46,9 @@ public class Host extends AsyncTask<Void, Void, Socket> {
                     GameManager.setClientSocket(client);
                     ClientObservable clientObservable = new ClientObservable();
                     ClientRead clientRead = new ClientRead(client, clientObservable);
-                    ClientWrite clientWrite = new ClientWrite(client);
-                    clientWrite.start();
                     clientRead.start();
                     GameManager.setClientObservable(clientObservable);
                     GameManager.setClientRead(clientRead);
-                    GameManager.setClientWrite(clientWrite);
                 } catch (IOException e){
                     e.printStackTrace();
                 }

@@ -27,6 +27,7 @@ public class SaluteActivity extends Activity implements SensorEventListener {
     private Handler mHandler;
     private Runnable rStartGame;
     private long saluteBegan;
+    private boolean saluteCompleted;
 
 
     @Override
@@ -43,6 +44,7 @@ public class SaluteActivity extends Activity implements SensorEventListener {
         mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         isSaluting = false;
         opponentSaluting = true;  //temporarily true, change this to false!!!
+        saluteCompleted = false;
         mediaPlayer = MediaPlayer.create(this, R.raw.countdown);
         mHandler = new Handler();
         //Creates a runnable that starts the game by switching to PlayActivity
@@ -66,21 +68,14 @@ public class SaluteActivity extends Activity implements SensorEventListener {
     @Override
     public final void onSensorChanged(SensorEvent event) {
         float distance = event.values[0];
-        if (distance < 5 && !isSaluting) {
-            isSaluting = true;
+        if (distance < 5) {
             saluteBegan = System.currentTimeMillis();
-            tryToStart();
+            if(GameManager.hasClientSocket()){
+                GameManager.send("slt");
+            }
             //TODO: Tell opponent that you are saluting
         } else if (distance > 5) {
-            isSaluting = false;
-            if(System.currentTimeMillis() - saluteBegan > 3000 && saluteBegan != 0){
-                mHandler.postDelayed(rStartGame, 200);
-                mSensorManager.unregisterListener(this);
-                saluteBegan = 0;
-            } else {
-                cancelCountdown();
-            }
-            //TODO: Tell opponent that you are no longer saluting
+            GameManager.setSaluting(false);
         }
     }
 
@@ -91,6 +86,7 @@ public class SaluteActivity extends Activity implements SensorEventListener {
     private boolean tryToStart() {
         if (isSaluting && opponentSaluting) {
             mediaPlayer.start();
+
             return true;
         }
         return false;
