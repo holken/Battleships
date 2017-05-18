@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
 import android.os.Bundle;;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -39,9 +40,6 @@ public class PlayActivity extends Activity {
         setContentView(R.layout.activity_play);
         handler = new Handler();
 
-        /*if (!MainActivity.TEST) {
-            new ConnectionManager(this);
-        }*/
         final ConstraintLayout LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
         VIBRATOR = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -73,14 +71,14 @@ public class PlayActivity extends Activity {
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                playSound("boom");
+                                GameManager.playSound("boom");
                             }
                         }, 3000);
                     } else {
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                playSound("splash");
+                                GameManager.playSound("splash");
                             }
                         }, 3000);
                     }
@@ -92,38 +90,9 @@ public class PlayActivity extends Activity {
     }
 
     private void launchMissile() {
-        playSound("fire");
+        GameManager.playSound("fire");
     }
 
-    /**
-     * Handles mMediaPlayer to make sounds easy to manage
-     *
-     * @param sound: the sound to be played. Choose from: "fire", "boom", "splash"
-     */
-    private void playSound(String sound) {
-        if (mMediaPlayer != null) {
-            //if(!mMediaPlayer.isPlaying()) {   //This enables sounds to overlap, but crashes the media player after a while. Probably something to do with MediaPlayer.create()
-                mMediaPlayer.release();         // returning a new instance of media player each time, leaving the old one unreleased. Could be fixed with some effort but
-                mMediaPlayer = null;            // once cooldowns are implemented this will not matter
-            //}
-        }
-        switch (sound) {
-            case "fire":
-                mMediaPlayer = MediaPlayer.create(PlayActivity.this, R.raw.missile_launch);
-                mMediaPlayer.start();
-                break;
-            case "boom":
-                mMediaPlayer = MediaPlayer.create(PlayActivity.this, R.raw.explosion);
-                mMediaPlayer.start();
-                break;
-            case "splash":
-                mMediaPlayer = MediaPlayer.create(PlayActivity.this, R.raw.splash);
-                mMediaPlayer.start();
-                break;
-            default:
-                break;
-        }
-    }
 
     /**
      * Initiates vibration depending on hit or miss and returns true if hit
