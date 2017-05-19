@@ -1,6 +1,8 @@
 package com.example.simon.battleships;
 
 import android.content.Intent;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +21,10 @@ public class joinGameActivity extends AppCompatActivity {
     //TextView clientStatusText;
     String code;
     private EditText firstIP, secondIP;
+    private  WifiManager mManager;
+    private WifiInfo mWifiInfo;
+    private int ipAddress;
+    private String formattedIpAddress;
 
 
     @Override
@@ -29,6 +35,10 @@ public class joinGameActivity extends AppCompatActivity {
         //ipEnter = (EditText) findViewById(R.id.ipEnter);
         firstIP = (EditText) findViewById(R.id.firstIP);
         secondIP = (EditText) findViewById(R.id.secondIP);
+        mManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+        mWifiInfo = mManager.getConnectionInfo();
+        ipAddress = mWifiInfo.getIpAddress();
+        formattedIpAddress = String.format("%d.%d.", (ipAddress & 0xFF), (ipAddress >> 8 & 0xFF));
         code = "";
         connectButton = (Button) findViewById(R.id.findHostButton);
         GameManager.setActivity(this);
@@ -42,9 +52,8 @@ public class joinGameActivity extends AppCompatActivity {
                         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                                 .permitAll().build();
                         StrictMode.setThreadPolicy(policy);
-                        client = new Client(firstIP.getText().toString());//TODO fix
+                        client = new Client(formattedIpAddress + firstIP.getText().toString() + "." + secondIP.getText().toString());
                         client.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, ipEnter.getText().toString());
-
                     }
 
                 }
