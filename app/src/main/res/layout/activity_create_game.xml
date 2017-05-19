@@ -41,7 +41,13 @@
         android:layout_marginLeft="32dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:focusable="false"
-        android:focusableInTouchMode="false"/>
+        android:focusableInTouchMode="false"
+        android:fontFamily="casual"
+        android:textColor="#2479E7"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textCursorDrawable="@null"/>
 
     <EditText
         android:id="@+id/secondIP"
@@ -57,5 +63,11 @@
         android:layout_marginRight="32dp"
         app:layout_constraintRight_toRightOf="parent"
         android:focusable="false"
-        android:focusableInTouchMode="false"/>
+        android:focusableInTouchMode="false"
+        android:fontFamily="casual"
+        android:textColor="#2479E7"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textCursorDrawable="@null" />
 </android.support.constraint.ConstraintLayout>

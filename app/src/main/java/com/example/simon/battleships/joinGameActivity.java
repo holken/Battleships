@@ -16,29 +16,33 @@ public class joinGameActivity extends AppCompatActivity {
     Button connectButton;
     SocketHandler socketHandler;
     Client client;
-    TextView clientStatusText;
+    //TextView clientStatusText;
     String code;
+    private EditText firstIP, secondIP;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_game);
-        clientStatusText = (TextView) findViewById(R.id.clientStatusText);
-        ipEnter = (EditText) findViewById(R.id.ipEnter);
+        //clientStatusText = (TextView) findViewById(R.id.clientStatusText);
+        //ipEnter = (EditText) findViewById(R.id.ipEnter);
+        firstIP = (EditText) findViewById(R.id.firstIP);
+        secondIP = (EditText) findViewById(R.id.secondIP);
         code = "";
         connectButton = (Button) findViewById(R.id.findHostButton);
         GameManager.setActivity(this);
         connectButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
-                if (!ipEnter.getText().equals("")) {
+                //TODO IP fix
+                if (!firstIP.getText().equals("") && !secondIP.getText().equals("")) {
 
                     int SDK_INT = android.os.Build.VERSION.SDK_INT;
                     if (SDK_INT > 8) {
                         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                                 .permitAll().build();
                         StrictMode.setThreadPolicy(policy);
-                        client = new Client(ipEnter.getText().toString());
+                        client = new Client(firstIP.getText().toString());//TODO fix
                         client.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, ipEnter.getText().toString());
 
                     }
