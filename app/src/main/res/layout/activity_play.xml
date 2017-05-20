@@ -18,4 +18,31 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ProgressBar
+        android:id="@+id/reloadingProgress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:indeterminate="false"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="40dp"
+        android:max="3000"
+        android:progressDrawable="@drawable/progress_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/reloadingText"
+        android:layout_width="110dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="40dp"
+        android:fontFamily="casual"
+        android:text="Reloading"
+        android:textColor="@android:color/background_light"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:text="Reloading"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="79dp" />
+
 </android.support.constraint.ConstraintLayout>

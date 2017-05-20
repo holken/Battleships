@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -165,19 +166,25 @@ public class GameManager {
     }
 
     //Never used?
-    public static boolean hasHostSocket() { return host != null; }
+    public static boolean hasHostSocket() {
+        return host != null;
+    }
 
-    public static boolean hasClientSocket() { return client != null; }
+    public static boolean hasClientSocket() {
+        return client != null;
+    }
 
     //Never used?
-    public static boolean hasLocalClientSocket() { return localClient != null; }
+    public static boolean hasLocalClientSocket() {
+        return localClient != null;
+    }
 
     public static synchronized ClientRead getClientRead() {
         return clientRead;
     }
 
     public static synchronized void send(String message) {
-        if(client != null) {
+        if (client != null) {
             Log.e("Trying to send ", message);
             clientWrite = new ClientWrite(client, message);
             clientWrite.start();
@@ -203,13 +210,19 @@ public class GameManager {
     }
 
     //Never used?
-    public static boolean hasClientRead() { return clientRead != null; }
+    public static boolean hasClientRead() {
+        return clientRead != null;
+    }
 
     //Never used?
-    public static boolean hasClientWrite() { return clientWrite != null; }
+    public static boolean hasClientWrite() {
+        return clientWrite != null;
+    }
 
     //Never used?
-    public static boolean hasLocalClientObservable() { return clientObservable != null; }
+    public static boolean hasLocalClientObservable() {
+        return clientObservable != null;
+    }
 
     public static void setActivity(Activity activity) {
         currActivity = activity;
@@ -263,8 +276,8 @@ public class GameManager {
                     mHandler.removeCallbacks(null);
                 case "fir":
                     int xPosFired = Integer.parseInt(code.substring(3, code.indexOf("|")));
-                    int yPosFired = Integer.parseInt(code.substring(code.indexOf("|")+1));
-                    if (xPos == xPosFired && yPos == yPosFired){
+                    int yPosFired = Integer.parseInt(code.substring(code.indexOf("|") + 1));
+                    if (xPos == xPosFired && yPos == yPosFired) {
                         Log.e("fir", "I'm dead");
                     }
                     break;
@@ -276,7 +289,8 @@ public class GameManager {
 
     /**
      * Begins countdown if both players are saluting.
-     * @return  true if both players are saluting
+     *
+     * @return true if both players are saluting
      */
     public static boolean beginSalute() {
         if ((isSaluting && opponentSaluting) || isSaluting && client == null) {
@@ -286,6 +300,7 @@ public class GameManager {
                 public void run() {
                     if (currentContext != null) {
                         if (isSaluting && opponentSaluting || isSaluting && client == null) {
+                            Log.e("beginSalute handler", "Trying to reach PlayActivity");
                             Intent intent = new Intent(currentContext, PlayActivity.class);
                             currentContext.startActivity(intent);
                             //overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);           //Funkar inte utan Activity, går inte att kalla från static
@@ -300,6 +315,7 @@ public class GameManager {
 
     /**
      * Called when salute begins, informs opponent of saluteStatus. If opponent is currently saluting, beginSalute() is called
+     *
      * @param isSaluting
      */
     public static void setIsSaluting(boolean isSaluting) {
@@ -318,7 +334,7 @@ public class GameManager {
      * Handles mMediaPlayer to make sounds easy to manage
      *
      * @param sound: the sound to be played. Choose from: "fire", "boom", "splash", "countdown". Any other string will make the
-     *             mediaPlayer stop whatever sound it's durrently playing.
+     *               mediaPlayer stop whatever sound it's durrently playing.
      */
     public static void playSound(String sound) {
         if (mMediaPlayer != null) {

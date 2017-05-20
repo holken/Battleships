@@ -39,6 +39,7 @@ public class PlaceBoatActivity extends Activity {
         upperReadyButton = (Button) findViewById(R.id.upperReadyButton);
         lowerReadyButton = (Button) findViewById(R.id.lowerReadyButton);
         hideButtons();
+        GameManager.setContext(this);
 
         //imageView set width/height to GRID_PIXEL_WIDTH
         final ConstraintLayout LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
