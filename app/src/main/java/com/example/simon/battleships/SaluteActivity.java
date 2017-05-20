@@ -55,6 +55,7 @@ public class SaluteActivity extends Activity implements SensorEventListener {
     protected void onResume() {
         // Register a listener for the sensor.
         super.onResume();
+        GameManager.setContext(this);
         mSensorManager.registerListener(this, mProximity, SensorManager.SENSOR_DELAY_NORMAL);
     }
 

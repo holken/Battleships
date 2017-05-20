@@ -177,9 +177,11 @@ public class GameManager {
     }
 
     public static synchronized void send(String message) {
-        Log.e("Trying to send ", message);
-        clientWrite = new ClientWrite(client, message);
-        clientWrite.start();
+        if(client != null) {
+            Log.e("Trying to send ", message);
+            clientWrite = new ClientWrite(client, message);
+            clientWrite.start();
+        }
     }
 
     public static synchronized void setClientRead(ClientRead clientR) {
@@ -272,13 +274,13 @@ public class GameManager {
      * @return  true if both players are saluting
      */
     public static boolean beginSalute() {
-        if (isSaluting && opponentSaluting) {
+        if ((isSaluting && opponentSaluting) || isSaluting && client == null) {
             playSound("countdown");
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     if (currentContext != null) {
-                        if (isSaluting && opponentSaluting) {
+                        if (isSaluting && opponentSaluting || isSaluting && client == null) {
                             Intent intent = new Intent(currentContext, PlayActivity.class);
                             currentContext.startActivity(intent);
                             //overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);           //Funkar inte utan Activity, går inte att kalla från static
@@ -301,7 +303,7 @@ public class GameManager {
             send("bsl");
             beginSalute();
         } else {
-            mHandler.removeCallbacks(null);
+            mHandler.removeCallbacks(null);     // TODO: Might need to be changed to remove specific Callback
             send("esl");
             playSound("");                  //Stops media player if it's currently playing
         }
@@ -322,8 +324,7 @@ public class GameManager {
         }
         switch (sound) {
             case "fire":
-                mMediaPlayer = new MediaPlayer();
-                mMediaPlayer.create(currentContext, R.raw.missile_launch);
+                mMediaPlayer = mMediaPlayer.create(currentContext, R.raw.launch);
                 mMediaPlayer.start();
                 break;
             case "boom":

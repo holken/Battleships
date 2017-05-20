@@ -42,6 +42,7 @@ public class PlayActivity extends Activity {
 
         final ConstraintLayout LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
         VIBRATOR = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        GameManager.setContext(this);
 
         LAYOUT.setOnTouchListener(new View.OnTouchListener() {
 
@@ -66,7 +67,7 @@ public class PlayActivity extends Activity {
                 if (motionEvent.getAction() == android.view.MotionEvent.ACTION_UP) {
                     VIBRATOR.cancel();
                     isVibrating = false;
-                    launchMissile();
+                    launchMissile(x, y);
                     if (GameManager.isHit(x, y) == 2) {
                         handler.postDelayed(new Runnable() {
                             @Override
@@ -89,7 +90,12 @@ public class PlayActivity extends Activity {
         });
     }
 
-    private void launchMissile() {
+    /**
+     * Launches missile
+     * @param x X-coordinate for launch
+     * @param y Y-coordinate for launch
+     */
+    private void launchMissile(int x, int y) {
         GameManager.playSound("fire");
     }
 
@@ -118,6 +124,11 @@ public class PlayActivity extends Activity {
             default:
                 return false;
         }
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        GameManager.setContext(this);
     }
 
     @Override
