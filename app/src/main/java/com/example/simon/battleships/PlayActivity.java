@@ -82,21 +82,6 @@ public class PlayActivity extends Activity {
                     VIBRATOR.cancel();
                     isVibrating = false;
                     launchMissile(x, y);
-                    if (GameManager.isHit(x, y) == 2) {
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                GameManager.playSound("boom");
-                            }
-                        }, 3000);
-                    } else {
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                GameManager.playSound("splash");
-                            }
-                        }, 3000);
-                    }
                 }
 
                 return true;
@@ -116,7 +101,12 @@ public class PlayActivity extends Activity {
             lastMissileLaunched = System.currentTimeMillis();
             GameManager.send("fir" + x + "|" + y);
             GameManager.playSound("fire");
-
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    GameManager.playSound("splash");
+                }
+            }, 3000);
         }
     }
 
@@ -127,7 +117,6 @@ public class PlayActivity extends Activity {
         /** CountDownTimer runs for FIRE_COOLDOWN milliseconds with a tick every 100 milliseconds */
         cdt = new CountDownTimer(FIRE_COOLDOWN, 10) {
             public void onTick(long millisUntilFinished) {
-                Log.e("tick", "boom");
                 reloadProgressBar.setProgress((int)(FIRE_COOLDOWN - millisUntilFinished));
             }
 
