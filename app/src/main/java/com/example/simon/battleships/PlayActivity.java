@@ -68,6 +68,7 @@ public class PlayActivity extends Activity {
                     VIBRATOR.cancel();
                     isVibrating = false;
                     launchMissile(x, y);
+                     GameManager.send("fir"+x+"|"+y);
                     if (GameManager.isHit(x, y) == 2) {
                         handler.postDelayed(new Runnable() {
                             @Override

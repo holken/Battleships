@@ -261,7 +261,12 @@ public class GameManager {
                 case "esl":
                     opponentSaluting = false;
                     mHandler.removeCallbacks(null);
-                case "fire":
+                case "fir":
+                    int xPosFired = Integer.parseInt(code.substring(3, code.indexOf("|")));
+                    int yPosFired = Integer.parseInt(code.substring(code.indexOf("|")+1));
+                    if (xPos == xPosFired && yPos == yPosFired){
+                        Log.e("fir", "I'm dead");
+                    }
                     break;
                 default:
                     break;
