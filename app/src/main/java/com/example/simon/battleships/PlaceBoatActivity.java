@@ -92,7 +92,6 @@ public class PlaceBoatActivity extends Activity {
                 Log.e("Continuing to Salute", "Trying to reach salute from place boat.");
                 Intent intent = new Intent(PlaceBoatActivity.this, SaluteActivity.class);
                 PlaceBoatActivity.this.startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         }, 1000);
     }

@@ -8,6 +8,23 @@
     android:background="@drawable/greywatertexture"
     tools:context="com.example.simon.battleships.joinGameActivity">
 
+    <TextView
+        android:id="@+id/ipText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="60dp"
+        android:fontFamily="casual"
+        android:text="Enter Code"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_light"
+        android:textSize="60sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/firstIP"
         android:layout_width="150dp"
