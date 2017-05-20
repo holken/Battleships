@@ -39,6 +39,7 @@ public class PlaceBoatActivity extends Activity {
         upperReadyButton = (Button) findViewById(R.id.upperReadyButton);
         lowerReadyButton = (Button) findViewById(R.id.lowerReadyButton);
         hideButtons();
+        GameManager.setContext(this);
 
         //imageView set width/height to GRID_PIXEL_WIDTH
         final ConstraintLayout LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
@@ -92,7 +93,6 @@ public class PlaceBoatActivity extends Activity {
                 Log.e("Continuing to Salute", "Trying to reach salute from place boat.");
                 Intent intent = new Intent(PlaceBoatActivity.this, SaluteActivity.class);
                 PlaceBoatActivity.this.startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         }, 1000);
     }

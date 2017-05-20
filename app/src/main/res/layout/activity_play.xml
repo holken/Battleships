@@ -37,6 +37,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+<<<<<<< HEAD
     <TextView
         android:id="@+id/text1"
         android:layout_width="wrap_content"
@@ -95,5 +96,34 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+=======
+    <ProgressBar
+        android:id="@+id/reloadingProgress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:indeterminate="false"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="40dp"
+        android:max="3000"
+        android:progressDrawable="@drawable/progress_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/reloadingText"
+        android:layout_width="110dp"
+        android:layout_height="95dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="40dp"
+        android:fontFamily="casual"
+        android:text="Reloading"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_light"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:text="Reloading" />
+>>>>>>> origin/master
 
 </android.support.constraint.ConstraintLayout>

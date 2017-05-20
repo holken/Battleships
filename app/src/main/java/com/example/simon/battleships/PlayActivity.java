@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
@@ -14,8 +15,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+<<<<<<< HEAD
 import android.widget.ImageView;
+=======
+import android.widget.ProgressBar;
+>>>>>>> origin/master
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.Timer;
@@ -32,6 +39,12 @@ public class PlayActivity extends Activity {
     private final int MISS_DELAY = 160;
     private boolean isVibrating = false;
     private MediaPlayer mMediaPlayer;
+    private long lastMissileLaunched;           //Keeps track of when the last missile was launched
+    private final long FIRE_COOLDOWN = 3000;
+    private ProgressBar reloadProgressBar;
+    private TextView reloadingText;
+    private CountDownTimer cdt;
+    private long relativeProgress;
 
     // Tutorial
     private TextView tutorialStep1;
@@ -58,6 +71,10 @@ public class PlayActivity extends Activity {
 
         final ConstraintLayout LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
         VIBRATOR = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        reloadProgressBar = (ProgressBar) findViewById(R.id.reloadingProgress);
+        reloadingText = (TextView) findViewById(R.id.reloadingText);
+        reloadProgressBar.setVisibility(View.GONE);
+        reloadingText.setVisibility(View.GONE);
         GameManager.setContext(this);
 
         LAYOUT.setOnTouchListener(new View.OnTouchListener() {
@@ -108,6 +125,7 @@ public class PlayActivity extends Activity {
                     VIBRATOR.cancel();
                     isVibrating = false;
                     launchMissile(x, y);
+<<<<<<< HEAD
 
                     if(GameManager.isTutorial() && GameManager.isHit(x, y) != 1){
 
@@ -150,6 +168,8 @@ public class PlayActivity extends Activity {
                             }
                         }, 3000);
                     }
+=======
+>>>>>>> origin/master
                 }
 
                 return true;
@@ -159,11 +179,40 @@ public class PlayActivity extends Activity {
 
     /**
      * Launches missile
+     *
      * @param x X-coordinate for launch
      * @param y Y-coordinate for launch
      */
     private void launchMissile(int x, int y) {
-        GameManager.playSound("fire");
+        if (System.currentTimeMillis() - lastMissileLaunched >= FIRE_COOLDOWN) {      //True if fire is not on cooldown
+            animateCooldown();
+            lastMissileLaunched = System.currentTimeMillis();
+            GameManager.send("fir" + x + "|" + y);
+            GameManager.playSound("fire");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    GameManager.playSound("splash");
+                }
+            }, 3000);
+        }
+    }
+
+    private void animateCooldown() {
+        reloadProgressBar.setVisibility(View.VISIBLE);
+        reloadingText.setVisibility(View.VISIBLE);
+        reloadProgressBar.setProgress(0);
+        /** CountDownTimer runs for FIRE_COOLDOWN milliseconds with a tick every 100 milliseconds */
+        cdt = new CountDownTimer(FIRE_COOLDOWN, 10) {
+            public void onTick(long millisUntilFinished) {
+                reloadProgressBar.setProgress((int)(FIRE_COOLDOWN - millisUntilFinished));
+            }
+
+            public void onFinish() {
+                reloadProgressBar.setVisibility(View.GONE);
+                reloadingText.setVisibility(View.GONE);
+            }
+        }.start();
     }
 
 
@@ -192,8 +241,9 @@ public class PlayActivity extends Activity {
                 return false;
         }
     }
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         GameManager.setContext(this);
     }

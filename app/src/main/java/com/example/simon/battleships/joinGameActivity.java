@@ -1,11 +1,11 @@
 package com.example.simon.battleships;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.StrictMode;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -15,7 +15,7 @@ import android.widget.EditText;
 
 import java.util.Locale;
 
-public class joinGameActivity extends AppCompatActivity {
+public class joinGameActivity extends Activity {
     private Client client;
     private EditText firstIP, secondIP;
     private String formattedIpAddress;
