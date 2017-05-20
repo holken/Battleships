@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
-
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -79,6 +77,9 @@ public class GameManager {
         grid[x][y] = HIT;
     }
 
+    /**
+     * Clears the field from all ships
+     */
     public static void clearGrid() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 16; j++) {
@@ -163,26 +164,13 @@ public class GameManager {
         host = socket;
     }
 
-    public static boolean hasHostSocket() {
-        if (host == null) {
-            return false;
-        }
-        return true;
-    }
+    //Never used?
+    public static boolean hasHostSocket() { return host != null; }
 
-    public static boolean hasClientSocket() {
-        if (client == null) {
-            return false;
-        }
-        return true;
-    }
+    public static boolean hasClientSocket() { return client != null; }
 
-    public static boolean hasLocalClientSocket() {
-        if (localClient == null) {
-            return false;
-        }
-        return true;
-    }
+    //Never used?
+    public static boolean hasLocalClientSocket() { return localClient != null; }
 
     public static synchronized ClientRead getClientRead() {
         return clientRead;
@@ -191,7 +179,6 @@ public class GameManager {
     public static synchronized void send(String message) {
         Log.e("Trying to send ", message);
         clientWrite = new ClientWrite(client, message);
-        Log.e("Starting Thread", "");
         clientWrite.start();
     }
 
@@ -199,10 +186,12 @@ public class GameManager {
         clientRead = clientR;
     }
 
+    //Never used?
     public static synchronized void setClientWrite(ClientWrite clientW) {
         clientWrite = clientW;
     }
 
+    //Never used?
     public static synchronized ClientObservable getClientObservable() {
         return clientObservable;
     }
@@ -211,26 +200,14 @@ public class GameManager {
         clientObservable = clientO;
     }
 
-    public static boolean hasClientRead() {
-        if (clientRead == null) {
-            return false;
-        }
-        return true;
-    }
+    //Never used?
+    public static boolean hasClientRead() { return clientRead != null; }
 
-    public static boolean hasClientWrite() {
-        if (clientWrite == null) {
-            return false;
-        }
-        return true;
-    }
+    //Never used?
+    public static boolean hasClientWrite() { return clientWrite != null; }
 
-    public static boolean hasLocalClientObservable() {
-        if (clientObservable == null) {
-            return false;
-        }
-        return true;
-    }
+    //Never used?
+    public static boolean hasLocalClientObservable() { return clientObservable != null; }
 
     public static void setActivity(Activity activity) {
         currActivity = activity;
