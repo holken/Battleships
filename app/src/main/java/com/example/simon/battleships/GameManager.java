@@ -42,6 +42,9 @@ public class GameManager {
 
     private static Context currentContext;
 
+    //Tutorial
+    private static boolean tutorial;
+
     /**
      * Sets up game to match resources
      *
@@ -52,6 +55,7 @@ public class GameManager {
         opponentSaluting = false;
         isSaluting = false;
         mHandler = new Handler();
+        tutorial = false;
     }
 
     public static void setContext(Context c) {
@@ -339,9 +343,15 @@ public class GameManager {
                 mMediaPlayer = MediaPlayer.create(currentContext, R.raw.countdown);
                 mMediaPlayer.start();
             default:
-                break;
+
         }
     }
+    public static void setTutorial(boolean b){
+        tutorial = b;
+    }
 
+    public static boolean isTutorial(){
+        return tutorial;
+    }
 
 }

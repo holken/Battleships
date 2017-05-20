@@ -23,7 +23,7 @@ public class MainActivity extends Activity {
         Button joinButton = (Button) findViewById(R.id.joinButton);
         Button howButton = (Button) findViewById(R.id.howButton);
         Button testButton = (Button) findViewById(R.id.testButton);
-        howButton.setText("Bugged");
+
 
         //Calls the GameManager to set up game to match resources
         GameManager.initializeGame(getResources().getDisplayMetrics().widthPixels / 9);
@@ -48,7 +48,8 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 //Jag vill gå till PlayActivity utan att behöva gå igenom allt skit först. Dock buggar denna, vet inte varför
                 GameManager.clearGrid();
-                //GameManager.placeShip((int) Math.random()*9, (int) Math.random()*16);
+                GameManager.placeShip(4,12);
+                GameManager.setTutorial(true);
                 Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

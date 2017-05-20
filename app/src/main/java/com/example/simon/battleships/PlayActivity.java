@@ -2,6 +2,8 @@ package com.example.simon.battleships;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -12,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -30,6 +33,11 @@ public class PlayActivity extends Activity {
     private boolean isVibrating = false;
     private MediaPlayer mMediaPlayer;
 
+    // Tutorial
+    private TextView tutorialStep1;
+    private TextView tutorialStep2;
+    private ImageView holdTouch;
+    private TextView warningText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +46,15 @@ public class PlayActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_play);
+        tutorialStep1 = (TextView) findViewById(R.id.text1);
+        tutorialStep2 = (TextView) findViewById(R.id.text2);
+        holdTouch = (ImageView) findViewById(R.id.holdtouch);
+        warningText = (TextView) findViewById(R.id.warningtext);
+
         handler = new Handler();
+        if(GameManager.isTutorial()){
+            holdTouch.setVisibility(View.VISIBLE);
+        }
 
         final ConstraintLayout LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
         VIBRATOR = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -51,6 +67,30 @@ public class PlayActivity extends Activity {
                 //  COORDS_TEXT.setText("Touch at " + (int) (motionEvent.getY()/120) + ", " + (int) (motionEvent.getX()/120));
                 int x = (int) motionEvent.getX();
                 int y = (int) motionEvent.getY();
+
+                //Tutorial
+                warningText.setVisibility(View.INVISIBLE);
+                holdTouch.setVisibility(View.INVISIBLE);
+                tutorialStep2.setVisibility(View.INVISIBLE);
+                tutorialStep2.setVisibility(View.INVISIBLE);
+                if(GameManager.isTutorial()){  ///
+                    LAYOUT.setBackgroundResource(R.drawable.bluewatertexturelearn);
+                    tutorialStep1.setVisibility(View.VISIBLE);
+                    tutorialStep1.setText("Can you feel the vibrations? Drag your finger to the yellow area" );
+                    if(GameManager.isHit(x, y) == 1){  ///
+                        tutorialStep1.setVisibility(View.INVISIBLE);
+                        tutorialStep2.setVisibility(View.VISIBLE);
+                        tutorialStep2.setText("The vibration pattern changed! You are close to the target. " +
+                                "Drag your finger to the red area" );
+                    }
+                    if(GameManager.isHit(x, y) == 2){  ///
+                        tutorialStep1.setVisibility(View.INVISIBLE);
+                        tutorialStep2.setVisibility(View.VISIBLE);
+                        tutorialStep2.setText("The target is right under your finger. Release your finger to destroy your target" );
+                    }
+
+                }
+
                 if (!isVibrating) {
                     int delay = 0;
                     if (initiateVibration(x, y)) { //Typecast? //Fixa x och y
@@ -68,6 +108,33 @@ public class PlayActivity extends Activity {
                     VIBRATOR.cancel();
                     isVibrating = false;
                     launchMissile(x, y);
+
+                    if(GameManager.isTutorial() && GameManager.isHit(x, y) != 1){
+
+                            warningText.setVisibility(View.VISIBLE);
+                            tutorialStep1.setVisibility(View.INVISIBLE);
+                            LAYOUT.setBackgroundColor(Color.BLACK);
+
+                        if (GameManager.isHit(x,y) == 2 ) {
+                            tutorialStep2.setVisibility(View.INVISIBLE);
+                            warningText.setText("Note: The rings are only for tutorial");
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    warningText.setText("Good job!");
+                                    tutorialStep2.setVisibility(View.INVISIBLE);
+                                }
+                            }, 4000);
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent(PlayActivity.this, MainActivity.class);
+                                    PlayActivity.this.startActivity(intent);
+                                }
+                            }, 6000);
+
+                        }
+                    }
                     if (GameManager.isHit(x, y) == 2) {
                         handler.postDelayed(new Runnable() {
                             @Override
@@ -144,6 +211,7 @@ public class PlayActivity extends Activity {
     public void onStop() {
         super.onStop();
         GameManager.clearGrid();
+        GameManager.setTutorial(false);
         if (mMediaPlayer != null) {
             mMediaPlayer.release();
             mMediaPlayer = null;
