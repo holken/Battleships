@@ -50,6 +50,9 @@
         <activity
             android:name=".PlaceBoatActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".PostGameActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

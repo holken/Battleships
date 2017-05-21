@@ -67,4 +67,8 @@ public class SaluteActivity extends Activity implements SensorEventListener {
         super.onPause();
         mSensorManager.unregisterListener(this);
     }
+
+    //Disables back button
+    @Override
+    public void onBackPressed() {}
 }

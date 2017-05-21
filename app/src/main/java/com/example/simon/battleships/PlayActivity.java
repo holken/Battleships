@@ -303,12 +303,25 @@ public class PlayActivity extends Activity {
         super.onStop();
         GameManager.clearGrid();
         GameManager.setTutorial(false);
+        mSensorManager.unregisterListener(mShakeDetector);
+        VIBRATOR.cancel();
+        isVibrating = false;
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mSensorManager.unregisterListener(mShakeDetector);
+        VIBRATOR.cancel();
+        isVibrating = false;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mSensorManager.unregisterListener(mShakeDetector);
+        VIBRATOR.cancel();
+        isVibrating = false;
     }
 
     //Disables back button

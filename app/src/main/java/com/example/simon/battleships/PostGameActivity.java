@@ -8,18 +8,23 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class PostGameActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_post_game);
 
         GameManager.setContext(this);
+
+        ((TextView) findViewById(R.id.resultText)).setText(GameManager.result());
+        ((TextView) findViewById(R.id.myScoreText)).setText("YOU: " + GameManager.getMyScore());
+        ((TextView) findViewById(R.id.opponentScoreText)).setText("OPPONENT: " + GameManager.getOpponentScore());
 
 
         Button playAgainButton = (Button) findViewById(R.id.playAgainButton);

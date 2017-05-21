@@ -114,4 +114,18 @@ public class PlaceBoatActivity extends Activity {
         imageView.setY(gridY * gridPixelWidth);
         imageView.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        hideButtons();
+        spinner.setVisibility(View.GONE);
+        imageView.setVisibility(View.GONE);
+        waitingText.setVisibility(View.GONE);
+        textView.setVisibility(View.VISIBLE);
+    }
+
+    //Disables back button
+    @Override
+    public void onBackPressed() {}
 }

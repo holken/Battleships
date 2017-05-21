@@ -20,6 +20,9 @@ public class GameManager {
     private static int xPos;
     private static int yPos;
     private static boolean isDodging = false;
+    private static int myScore;
+    private static int opponentScore;
+    private static boolean iWon;
 
     //All dem network objectz
     private static Socket client;
@@ -312,6 +315,13 @@ public class GameManager {
                 case "mis":
                     missileApproaching(false);
                     break;
+                //U WON BITCH Congratulations, you have won the game
+                case "uwb":
+                    myScore++;
+                    iWon = true;
+                    Intent intent = new Intent(currentContext, PostGameActivity.class);
+                    currentContext.startActivity(intent);
+                    break;
                 default:
                     break;
             }
@@ -322,7 +332,11 @@ public class GameManager {
      * Game is lost
      */
     private static void loseGame() {
-        //You are dead, do something
+        send("uwb");
+        iWon = false;
+        opponentScore++;
+        Intent intent = new Intent(currentContext, PostGameActivity.class);
+        currentContext.startActivity(intent);
     }
 
     /**
@@ -363,7 +377,9 @@ public class GameManager {
             Intent intent = new Intent(currentContext, PlayActivity.class);
             currentContext.startActivity(intent);
         } else {
-            mHandler.removeCallbacks(null);     // TODO: Might need to be changed to remove specific Callback
+            if(mHandler != null) {
+                mHandler.removeCallbacks(null);     // TODO: Might need to be changed to remove specific Callback
+            }
             send("esl");
             playSound("");        //Stops media player if it's currently playing
         }
@@ -377,7 +393,7 @@ public class GameManager {
      */
     public static void playSound(String sound) {
 
-        if(approachPlayer == null || !approachPlayer.isPlaying()) {
+        if (approachPlayer == null || !approachPlayer.isPlaying()) {
             if (mMediaPlayer != null) {
                 mMediaPlayer.release();
                 mMediaPlayer = null;
@@ -405,11 +421,12 @@ public class GameManager {
                 approachPlayer.start();
                 break;
             default:
+                break;
         }
     }
 
     public static void missileApproaching(final boolean willHit) {
-        long flightDuration = (1 + new Random().nextInt(1))*1000;
+        long flightDuration = (1 + new Random().nextInt(1)) * 1000;
         long approachDuration = 850;
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -436,6 +453,22 @@ public class GameManager {
 
     public static boolean isTutorial() {
         return tutorial;
+    }
+
+    public static int getMyScore() {
+        return myScore;
+    }
+
+    public static int getOpponentScore() {
+        return opponentScore;
+    }
+
+    public static String result() {
+        if(iWon) {
+            return "YOU WON";
+        } else {
+            return "YOU LOST";
+        }
     }
 
     public static void setReady(boolean b) {
