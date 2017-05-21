@@ -278,6 +278,7 @@ public class GameManager {
                 case "esl":
                     opponentSaluting = false;
                     mHandler.removeCallbacks(null);
+                    playSound("");
                     break;
                 case "fir":
                     Log.e("Fire message", code);
@@ -317,7 +318,7 @@ public class GameManager {
     }
 
     /**
-     * Informs GamaManager on status of salute which then acts accordingly. 
+     * Informs GamaManager on status of salute which then acts accordingly.
      *
      * @param isSaluting
      */
