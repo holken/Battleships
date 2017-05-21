@@ -60,10 +60,14 @@ public class MainActivity extends Activity {
         //TESTING PURPOSES
         testButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                GameManager.missileApproaching(TEST);
+                TEST = !TEST;
+                /*
                 TEST = true;
                 Intent intent = new Intent(v.getContext(), PlaceBoatActivity.class);
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                */
             }
         });
     }

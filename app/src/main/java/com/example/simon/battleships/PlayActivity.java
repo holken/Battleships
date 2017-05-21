@@ -214,30 +214,12 @@ public class PlayActivity extends Activity {
                 }
             }, FIRE_COOLDOWN);
             animateFireCooldown();
-            int gridPixelWidth = GameManager.getGridPixelWidth();
             GameManager.playSound("fire");
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    GameManager.playSound("splash");
-                }
-            }, 3000);
+
             if (GameManager.isHit(x, y) == 2) {
                 GameManager.send("hit");
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        GameManager.playSound("boom");
-                    }
-                }, 3000);
             } else {
                 GameManager.send("mis");
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        GameManager.playSound("splash");
-                    }
-                }, 3000);
             }
         }
     }
@@ -250,7 +232,7 @@ public class PlayActivity extends Activity {
         fireReloadText.setVisibility(View.VISIBLE);
         fireReloadProgressBar.setProgress(0);
         /** CountDownTimer runs for FIRE_COOLDOWN milliseconds with a tick every 100 milliseconds */
-        CountDownTimer cdt = new CountDownTimer(FIRE_COOLDOWN, 10) {
+        new CountDownTimer(FIRE_COOLDOWN, 10) {
             public void onTick(long millisUntilFinished) {
                 fireReloadProgressBar.setProgress((int) (FIRE_COOLDOWN - millisUntilFinished));
             }
@@ -270,7 +252,7 @@ public class PlayActivity extends Activity {
         dodgeReloadText.setVisibility(View.VISIBLE);
         dodgeReloadProgressBar.setProgress(0);
         /** CountDownTimer runs for FIRE_COOLDOWN milliseconds with a tick every 100 milliseconds */
-        CountDownTimer cdt = new CountDownTimer(DODGE_COOLDOWN, 10) {
+        new CountDownTimer(DODGE_COOLDOWN, 10) {
             public void onTick(long millisUntilFinished) {
                 dodgeReloadProgressBar.setProgress((int) (DODGE_COOLDOWN - millisUntilFinished));
             }

@@ -9,6 +9,7 @@ import android.util.Log;
 
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Random;
 
 public class GameManager {
     //Gameboard, coordinates etc...
@@ -44,6 +45,7 @@ public class GameManager {
 
     //MediaPlayer
     private static MediaPlayer mMediaPlayer;
+    private static MediaPlayer approachPlayer;
 
     private static Context currentContext;
 
@@ -301,21 +303,25 @@ public class GameManager {
                     mHandler.removeCallbacks(null);
                     playSound("");
                     break;
+                //Opponent just fired a missile that will hit your ship
                 case "hit":
-                    Log.e("Fire message", code);
-                     if(!isDodging) {
-                         Log.e("Fire", "HIT");
-                     } else {
-                         Log.e("Fire", "Dodged");
-                     }
+                    missileApproaching(true);
                     break;
+                //Opponent just fired a missile that will miss your ship
                 case "mis":
-                    Log.e("Fire message", code + "s");
+                    missileApproaching(false);
                     break;
                 default:
                     break;
             }
         }
+    }
+
+    /**
+     * Game is lost
+     */
+    private static void loseGame() {
+        //You are dead, do something
     }
 
     /**
@@ -369,19 +375,20 @@ public class GameManager {
      *               mediaPlayer stop whatever sound it's durrently playing.
      */
     public static void playSound(String sound) {
-        if (mMediaPlayer != null) {
-            //if(!mMediaPlayer.isPlaying()) {   //This enables sounds to overlap, but crashes the media player after a while. Probably something to do with MediaPlayer.create()
-            mMediaPlayer.release();         // returning a new instance of media player each time, leaving the old one unreleased. Could be fixed with some effort but
-            mMediaPlayer = null;            // once cooldowns are implemented this will not matter
-            //}
+
+        if(approachPlayer == null || !approachPlayer.isPlaying()) {
+            if (mMediaPlayer != null) {
+                mMediaPlayer.release();
+                mMediaPlayer = null;
+            }
         }
         switch (sound) {
             case "fire":
-                mMediaPlayer = MediaPlayer.create(currentContext, R.raw.launch);
+                mMediaPlayer = MediaPlayer.create(currentContext, R.raw.bottle);
                 mMediaPlayer.start();
                 break;
             case "boom":
-                mMediaPlayer = MediaPlayer.create(currentContext, R.raw.explosion);
+                mMediaPlayer = MediaPlayer.create(currentContext, R.raw.missile_explode);
                 mMediaPlayer.start();
                 break;
             case "splash":
@@ -391,9 +398,36 @@ public class GameManager {
             case "countdown":
                 mMediaPlayer = MediaPlayer.create(currentContext, R.raw.countdown);
                 mMediaPlayer.start();
+                break;
+            case "approaching":
+                approachPlayer = MediaPlayer.create(currentContext, R.raw.approach_long);
+                approachPlayer.start();
+                break;
             default:
 
         }
+    }
+
+    public static void missileApproaching(final boolean willHit) {
+        long flightDuration = (1 + new Random().nextInt(1))*1000;
+        long approachDuration = 850;
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                playSound("approaching");
+            }
+        }, flightDuration);
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (isDodging || !willHit) { //Player is dodging or missile will miss
+                    playSound("splash");
+                } else {
+                    playSound("boom");
+                    loseGame();
+                }
+            }
+        }, flightDuration + approachDuration);
     }
 
     public static void setTutorial(boolean b) {
@@ -404,7 +438,7 @@ public class GameManager {
         return tutorial;
     }
 
-    public static void setReady(boolean b){
+    public static void setReady(boolean b) {
         ready = b;
         checkIfReady();
     }
