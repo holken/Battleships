@@ -285,6 +285,7 @@ public class GameManager {
                     Log.e("Y position", String.valueOf(yPosOpponent));
                     placeShip(xPosOpponent, yPosOpponent);
                     opponentReady = true;
+                    checkIfReady();
                     Log.e("positions", "Received - position x: " + xPosOpponent + "position y: " + yPosOpponent);
                     break;
                 //begin salute, Opponent has begun isSaluting
