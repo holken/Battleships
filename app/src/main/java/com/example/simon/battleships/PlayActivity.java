@@ -140,7 +140,6 @@ public class PlayActivity extends Activity {
                         if (GameManager.isHit(x,y) == 2 ) {
                             tutorialStep2.setVisibility(View.INVISIBLE);
                             warningText.setText("Note: The rings are only for tutorial");
-                            reloadProgressBar.setVisibility(View.VISIBLE);
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
@@ -158,21 +157,7 @@ public class PlayActivity extends Activity {
 
                         }
                     }
-                    if (GameManager.isHit(x, y) == 2) {
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                GameManager.playSound("boom");
-                            }
-                        }, 3000);
-                    } else {
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                GameManager.playSound("splash");
-                            }
-                        }, 3000);
-                    }
+
 
                 }
 
@@ -199,6 +184,21 @@ public class PlayActivity extends Activity {
                     GameManager.playSound("splash");
                 }
             }, 3000);
+            if (GameManager.isHit(x, y) == 2) {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        GameManager.playSound("boom");
+                    }
+                }, 3000);
+            } else {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        GameManager.playSound("splash");
+                    }
+                }, 3000);
+            }
         }
     }
 

@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         Button createButton = (Button) findViewById(R.id.createButton);
         Button joinButton = (Button) findViewById(R.id.joinButton);
-        Button howButton = (Button) findViewById(R.id.howButton);
+        Button tutorialButton = (Button) findViewById(R.id.howButton);
         Button testButton = (Button) findViewById(R.id.testButton);
 
         GameManager.setContext(this);
@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
-        howButton.setOnClickListener(new View.OnClickListener() {
+        tutorialButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //Jag vill gå till PlayActivity utan att behöva gå igenom allt skit först. Dock buggar denna, vet inte varför
                 GameManager.clearGrid();
