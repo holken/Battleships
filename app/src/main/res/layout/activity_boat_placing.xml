@@ -99,7 +99,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:fontFamily="casual"
-        android:text="Waiting for other player"
+        android:text="Waiting for opponent"
         android:textStyle="bold"
         android:textAlignment="center"
         android:textColor="@android:color/background_light"

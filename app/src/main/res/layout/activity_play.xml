@@ -153,7 +153,7 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        tools:text="Reloading" />
+        tools:text="Dodge" />
 
 
 </android.support.constraint.ConstraintLayout>
