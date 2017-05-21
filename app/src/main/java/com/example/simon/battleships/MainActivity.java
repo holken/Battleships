@@ -1,9 +1,12 @@
 package com.example.simon.battleships;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -26,7 +29,6 @@ public class MainActivity extends Activity {
 
         GameManager.setContext(this);
 
-
         //Calls the GameManager to set up game to match resources
         GameManager.initializeGame(getResources().getDisplayMetrics().widthPixels / 9);
 
@@ -36,14 +38,12 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), createGameActivity.class);
                 startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
         joinButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), joinGameActivity.class);
                 startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
         tutorialButton.setOnClickListener(new View.OnClickListener() {
@@ -52,9 +52,8 @@ public class MainActivity extends Activity {
                 GameManager.clearGrid();
                 GameManager.placeShip(4,12);
                 GameManager.setTutorial(true);
-                Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
+                Intent intent = new Intent(v.getContext(), PlayActivity.class);
                 startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
         //TESTING PURPOSES

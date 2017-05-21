@@ -66,6 +66,7 @@ public class GameManager {
         tutorial = false;
         ready = false;
         opponentReady = false;
+        clearGrid();
     }
 
     public static void setContext(Context c) {
@@ -404,7 +405,6 @@ public class GameManager {
                 approachPlayer.start();
                 break;
             default:
-
         }
     }
 
