@@ -37,6 +37,7 @@ public class GameManager {
     //Everthing to do with Saluting and such
     private static boolean isSaluting;
     private static boolean opponentSaluting;
+    private static boolean saluteFinished;
 
     //MediaPlayer
     private static MediaPlayer mMediaPlayer;
@@ -55,6 +56,7 @@ public class GameManager {
         GRID_PIXEL_WIDTH = gridPixelWidth;
         opponentSaluting = false;
         isSaluting = false;
+        saluteFinished = false;
         mHandler = new Handler();
         tutorial = false;
     }
@@ -304,10 +306,7 @@ public class GameManager {
                 public void run() {
                     if (currentContext != null) {
                         if (isSaluting && opponentSaluting || isSaluting && client == null) {
-                            Log.e("beginSalute handler", "Trying to reach PlayActivity");
-                            Intent intent = new Intent(currentContext, PlayActivity.class);
-                            currentContext.startActivity(intent);
-                            //overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);           //Funkar inte utan Activity, går inte att kalla från static
+                            saluteFinished = true;
                         }
                     }
                 }
@@ -318,7 +317,7 @@ public class GameManager {
     }
 
     /**
-     * Called when salute begins, informs opponent of saluteStatus. If opponent is currently saluting, beginSalute() is called
+     * Informs GamaManager on status of salute which then acts accordingly. 
      *
      * @param isSaluting
      */
@@ -327,10 +326,14 @@ public class GameManager {
         if (isSaluting) {
             send("bsl");
             beginSalute();
+        } else if (saluteFinished) {
+            Log.e("beginSalute handler", "Trying to reach PlayActivity");
+            Intent intent = new Intent(currentContext, PlayActivity.class);
+            currentContext.startActivity(intent);
         } else {
             mHandler.removeCallbacks(null);     // TODO: Might need to be changed to remove specific Callback
             send("esl");
-            playSound("");                  //Stops media player if it's currently playing
+            playSound("");        //Stops media player if it's currently playing
         }
     }
 
