@@ -244,10 +244,12 @@ public class GameManager {
     }
 
     public static void dodge() {
+        Log.e("Dodge", "Starting");
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 isDodging = false;
+                Log.e("Dodge", "Ending");
             }
         }, 500); //Time for which dodging is active
         isDodging = true;

@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.MediaPlayer;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -18,7 +19,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class PlayActivity extends Activity implements ShakeListener.Callback {
+public class PlayActivity extends Activity {
     //    private Timer currentTimer = new Timer();
     private Handler handler;
     private Vibrator VIBRATOR;
@@ -28,10 +29,20 @@ public class PlayActivity extends Activity implements ShakeListener.Callback {
     private final int HIT_OR_NEAR_HIT_DELAY = 80;
     private final int MISS_DELAY = 160;
     private boolean isVibrating = false;
-    private long lastMissileLaunched;           //Keeps track of when the last missile was launched
-    private final long FIRE_COOLDOWN = 3000;
+
     private ProgressBar reloadProgressBar;
     private TextView reloadingText;
+
+    //Cooldown
+    private boolean fireOnCooldown = false;
+    private boolean dodgeOnCooldown = false;
+    private final long FIRE_COOLDOWN = 3000;
+    private final long DODGE_COOLDOWN = 5000;
+
+    //Shake Detection
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
 
     // Tutorial
     private TextView tutorialStep1;
@@ -151,6 +162,28 @@ public class PlayActivity extends Activity implements ShakeListener.Callback {
                 return true;
             }
         });
+
+        //ShakeDetector initialization
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+
+            @Override
+            public void onShake(int count) {
+                if(!dodgeOnCooldown) {
+                    dodgeOnCooldown = true;
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            dodgeOnCooldown = false;
+                        }
+                    }, DODGE_COOLDOWN);
+                    GameManager.dodge();
+                }
+            }
+        });
     }
 
     /**
@@ -160,9 +193,15 @@ public class PlayActivity extends Activity implements ShakeListener.Callback {
      * @param y Y-coordinate for launch
      */
     private void launchMissile(int x, int y) {
-        if (System.currentTimeMillis() - lastMissileLaunched >= FIRE_COOLDOWN) {      //True if fire is not on cooldown
+        if (!fireOnCooldown) {
+            fireOnCooldown = true;
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    fireOnCooldown = false;
+                }
+            }, FIRE_COOLDOWN);
             animateCooldown();
-            lastMissileLaunched = System.currentTimeMillis();
             int gridPixelWidth = GameManager.getGridPixelWidth();
             GameManager.playSound("fire");
             handler.postDelayed(new Runnable() {
@@ -239,6 +278,7 @@ public class PlayActivity extends Activity implements ShakeListener.Callback {
     public void onResume() {
         super.onResume();
         GameManager.setContext(this);
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
@@ -248,16 +288,13 @@ public class PlayActivity extends Activity implements ShakeListener.Callback {
         GameManager.setTutorial(false);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        mSensorManager.unregisterListener(mShakeDetector);
+    }
+
     //Disables back button
     @Override
     public void onBackPressed() {}
-
-
-    @Override
-    public void shakingStarted() {
-        GameManager.dodge();
-    }
-
-    @Override
-    public void shakingStopped() {}
 }
