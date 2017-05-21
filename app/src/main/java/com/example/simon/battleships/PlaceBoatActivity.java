@@ -17,6 +17,7 @@ import android.widget.TextView;
 public class PlaceBoatActivity extends Activity {
     private ImageView imageView;
     private ProgressBar spinner;
+    private TextView waitingText;
     private Handler handler;
     private Button upperReadyButton;
     private Button lowerReadyButton;
@@ -32,6 +33,8 @@ public class PlaceBoatActivity extends Activity {
         setContentView(R.layout.activity_boat_placing);
         imageView = (ImageView) findViewById(R.id.boatImage);
         textView = (TextView) findViewById(R.id.placeBoatText);
+        waitingText = (TextView) findViewById(R.id.waitingText);
+        waitingText.setVisibility(View.GONE);
         spinner = (ProgressBar) findViewById(R.id.progressBar);
         spinner.setVisibility(View.GONE);
         handler = new Handler();
@@ -87,6 +90,7 @@ public class PlaceBoatActivity extends Activity {
 
         hideButtons();
         spinner.setVisibility(View.VISIBLE);
+        waitingText.setVisibility(View.VISIBLE);
     }
 
     private void hideButtons() {
