@@ -3,6 +3,7 @@ package com.example.simon.battleships;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -26,6 +27,7 @@ public class SaluteActivity extends Activity implements SensorEventListener {
     private GifTextView gifSalute;
     private TextView saluteText;
     private TextView saluteTextTutorial;
+    private TextView endText;
     private Handler handler;
 
     @Override
@@ -38,6 +40,7 @@ public class SaluteActivity extends Activity implements SensorEventListener {
         gifSalute = (GifTextView) findViewById(R.id.gifSalute);
         saluteText = (TextView) findViewById(R.id.saluteText);
         saluteTextTutorial = (TextView) findViewById(R.id.saluteTextTut);
+        endText = (TextView) findViewById(R.id.endText);
         handler = new Handler();
         GameManager.setContext(this);
         Log.e("Entering Salute", "asd");
@@ -69,9 +72,19 @@ public class SaluteActivity extends Activity implements SensorEventListener {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        startActivity(new Intent(SaluteActivity.this, howToPlayActivity.class));
+                        gifSalute.setVisibility(View.INVISIBLE);
+                        saluteTextTutorial.setVisibility(View.INVISIBLE);
+                        endText.setVisibility(View.VISIBLE);
+                        //LAYOUT.setBackgroundColor(Color.BLACK);
                     }
                 }, 4000);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        endText.setVisibility(View.INVISIBLE);
+                        startActivity(new Intent(SaluteActivity.this, howToPlayActivity.class));
+                    }
+                }, 6000);
             }
             GameManager.setIsSaluting(true);
         } else if (distance > 5) {
