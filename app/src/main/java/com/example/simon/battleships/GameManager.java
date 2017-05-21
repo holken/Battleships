@@ -20,6 +20,8 @@ public class GameManager {
     private static int xPos;
     private static int yPos;
     private static boolean isDodging = false;
+    private static int myScore;
+    private static int opponentScore;
 
     //All dem network objectz
     private static Socket client;
@@ -311,6 +313,11 @@ public class GameManager {
                 case "mis":
                     missileApproaching(false);
                     break;
+                //U WON BITCH Congratulations, you have won the game
+                case "uwb":
+                    myScore++;
+                    break;
+
                 default:
                     break;
             }
@@ -321,7 +328,8 @@ public class GameManager {
      * Game is lost
      */
     private static void loseGame() {
-        //You are dead, do something
+        send("uwb");
+        opponentScore++;
     }
 
     /**
@@ -404,8 +412,16 @@ public class GameManager {
                 approachPlayer.start();
                 break;
             default:
-
+                break;
         }
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                mMediaPlayer.release();
+                mMediaPlayer = null;
+            }
+        }, mMediaPlayer.getDuration());
     }
 
     public static void missileApproaching(final boolean willHit) {
@@ -437,6 +453,10 @@ public class GameManager {
     public static boolean isTutorial() {
         return tutorial;
     }
+
+    public static int getMyScore(){ return myScore; }
+
+    public static int getOpponentScore(){ return opponentScore; }
 
     public static void setReady(boolean b) {
         ready = b;
