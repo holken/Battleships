@@ -2,13 +2,13 @@
 <rotate xmlns:android="http://schemas.android.com/apk/res/android"
     android:pivotX="50%"
     android:pivotY="50%"
-    android:fromDegrees="0"
-    android:toDegrees="360">
+    android:fromDegrees="270"
+    android:toDegrees="270">
     <shape
         android:shape="ring"
         android:innerRadiusRatio="3"
         android:thicknessRatio="8"
-        android:useLevel="false">
+        android:useLevel="true">
 
         <size
             android:width="60dip"
@@ -17,7 +17,7 @@
         <gradient
             android:type="sweep"
             android:useLevel="false"
-            android:startColor="#FFFFFF"
+            android:startColor="#2479E7"
             android:endColor="#2479E7"
             android:angle="0"
             />
