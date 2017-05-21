@@ -1,7 +1,6 @@
 package com.example.simon.battleships;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
@@ -80,6 +79,7 @@ public class PlaceBoatActivity extends Activity {
     private void readyUp() {
         if (GameManager.hasClientSocket()){
             GameManager.send("plc"+ gridX + "|" + gridY);
+            GameManager.setReady(true);
             Log.e("positions", "Sent - position x: " + gridX + ", position y: " + gridY);
         } else {
             Log.e("ReadyUp fail", "Has no client socket.");
@@ -87,14 +87,6 @@ public class PlaceBoatActivity extends Activity {
 
         hideButtons();
         spinner.setVisibility(View.VISIBLE);
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Log.e("Continuing to Salute", "Trying to reach salute from place boat.");
-                Intent intent = new Intent(PlaceBoatActivity.this, SaluteActivity.class);
-                PlaceBoatActivity.this.startActivity(intent);
-            }
-        }, 1000);
     }
 
     private void hideButtons() {

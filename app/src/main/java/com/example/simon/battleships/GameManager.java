@@ -38,6 +38,10 @@ public class GameManager {
     private static boolean opponentSaluting;
     private static boolean saluteFinished;
 
+    //Everything to do with checkIfReady
+    private static boolean ready;
+    private static boolean opponentReady;
+
     //MediaPlayer
     private static MediaPlayer mMediaPlayer;
 
@@ -58,6 +62,8 @@ public class GameManager {
         saluteFinished = false;
         mHandler = new Handler();
         tutorial = false;
+        ready = false;
+        opponentReady = false;
     }
 
     public static void setContext(Context c) {
@@ -241,11 +247,12 @@ public class GameManager {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-               isDodging = false;
+                isDodging = false;
             }
         }, 500); //Time for which dodging is active
         isDodging = true;
     }
+
     /**
      * Method that is called from clientWrite when it receives a message which it then forward to this method which handle what to do with the information
      *
@@ -277,6 +284,7 @@ public class GameManager {
                     int yPosOpponent = Integer.parseInt(code.substring(code.indexOf("|") + 1));
                     Log.e("Y position", String.valueOf(yPosOpponent));
                     placeShip(xPosOpponent, yPosOpponent);
+                    opponentReady = true;
                     Log.e("positions", "Received - position x: " + xPosOpponent + "position y: " + yPosOpponent);
                     break;
                 //begin salute, Opponent has begun isSaluting
@@ -295,7 +303,7 @@ public class GameManager {
                     int xPosFired = Integer.parseInt(code.substring(3, code.indexOf("|")));
                     int yPosFired = Integer.parseInt(code.substring(code.indexOf("|") + 1));
                     if (xPos == xPosFired && yPos == yPosFired) {
-                        if(!isDodging) {
+                        if (!isDodging) {
                             Log.e("Fire", "HIT");
                         } else {
                             Log.e("Fire", "Dodged");
@@ -386,12 +394,25 @@ public class GameManager {
 
         }
     }
-    public static void setTutorial(boolean b){
+
+    public static void setTutorial(boolean b) {
         tutorial = b;
     }
 
-    public static boolean isTutorial(){
+    public static boolean isTutorial() {
         return tutorial;
     }
 
+    public static void setReady(boolean b){
+        ready = b;
+        checkIfReady();
+    }
+
+    public static void checkIfReady() {
+        if (ready && opponentReady) {
+            Log.e("Continuing to Salute", "Trying to reach salute from place boat.");
+            Intent intent = new Intent(currentContext, SaluteActivity.class);
+            currentContext.startActivity(intent);
+        }
+    }
 }
