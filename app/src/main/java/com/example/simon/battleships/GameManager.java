@@ -18,8 +18,6 @@ public class GameManager {
     private static int GRID_PIXEL_WIDTH = 120;
     private static int xPos;
     private static int yPos;
-    private static int xPosOpponent;
-    private static int yPosOpponent;
 
     //All dem network objectz
     private static Socket client;
@@ -264,10 +262,10 @@ public class GameManager {
                 //client sends boatCoords
                 case "plc":
                     Log.e("message", code);
-                    Log.e("message", code.substring(0, code.indexOf("|")));
-                    Log.e("message", code.substring(code.indexOf("|") + 1));
-                    xPosOpponent = Integer.parseInt(code.substring(3, code.indexOf("|")));
-                    yPosOpponent = Integer.parseInt(code.substring(code.indexOf("|") + 1));
+                    int xPosOpponent = Integer.parseInt(code.substring(3, code.indexOf("|")));
+                    Log.e("X position", String.valueOf(xPosOpponent));
+                    int yPosOpponent = Integer.parseInt(code.substring(code.indexOf("|") + 1));
+                    Log.e("Y position", String.valueOf(yPosOpponent));
                     placeShip(xPosOpponent, yPosOpponent);
                     Log.e("positions", "Received - position x: " + xPosOpponent + "position y: " + yPosOpponent);
                     break;
@@ -280,7 +278,9 @@ public class GameManager {
                 case "esl":
                     opponentSaluting = false;
                     mHandler.removeCallbacks(null);
+                    break;
                 case "fir":
+                    Log.e("Fire message", code);
                     int xPosFired = Integer.parseInt(code.substring(3, code.indexOf("|")));
                     int yPosFired = Integer.parseInt(code.substring(code.indexOf("|") + 1));
                     if (xPos == xPosFired && yPos == yPosFired) {

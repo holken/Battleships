@@ -43,8 +43,6 @@ public class PlayActivity extends Activity {
     private final long FIRE_COOLDOWN = 3000;
     private ProgressBar reloadProgressBar;
     private TextView reloadingText;
-    private CountDownTimer cdt;
-    private long relativeProgress;
 
     // Tutorial
     private TextView tutorialStep1;
@@ -176,7 +174,8 @@ public class PlayActivity extends Activity {
         if (System.currentTimeMillis() - lastMissileLaunched >= FIRE_COOLDOWN) {      //True if fire is not on cooldown
             animateCooldown();
             lastMissileLaunched = System.currentTimeMillis();
-            GameManager.send("fir" + x + "|" + y);
+            int gridPixelWidth = GameManager.getGridPixelWidth();
+            GameManager.send("fir" + x / gridPixelWidth + "|" + y / gridPixelWidth);
             GameManager.playSound("fire");
             handler.postDelayed(new Runnable() {
                 @Override
@@ -207,9 +206,9 @@ public class PlayActivity extends Activity {
         reloadingText.setVisibility(View.VISIBLE);
         reloadProgressBar.setProgress(0);
         /** CountDownTimer runs for FIRE_COOLDOWN milliseconds with a tick every 100 milliseconds */
-        cdt = new CountDownTimer(FIRE_COOLDOWN, 10) {
+        CountDownTimer cdt = new CountDownTimer(FIRE_COOLDOWN, 10) {
             public void onTick(long millisUntilFinished) {
-                reloadProgressBar.setProgress((int)(FIRE_COOLDOWN - millisUntilFinished));
+                reloadProgressBar.setProgress((int) (FIRE_COOLDOWN - millisUntilFinished));
             }
 
             public void onFinish() {
@@ -280,4 +279,7 @@ public class PlayActivity extends Activity {
             mMediaPlayer = null;
         }
     }
+
+    @Override
+    public void onBackPressed() {}
 }

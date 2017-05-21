@@ -80,7 +80,7 @@ public class PlaceBoatActivity extends Activity {
     private void readyUp() {
         if (GameManager.hasClientSocket()){
             GameManager.send("plc"+ gridX + "|" + gridY);
-            Log.e("positions", "Sent - position x: " + gridX + "position y: " + gridY);
+            Log.e("positions", "Sent - position x: " + gridX + ", position y: " + gridY);
         } else {
             Log.e("ReadyUp fail", "Has no client socket.");
         }

@@ -10,6 +10,7 @@ import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -29,6 +30,7 @@ public class SaluteActivity extends Activity implements SensorEventListener {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_salute);
         GameManager.setContext(this);
+        Log.e("Entering Salute", "asd");
 
         // Get an instance of the sensor service, and use that to get an instance of
         // a particular sensor.
