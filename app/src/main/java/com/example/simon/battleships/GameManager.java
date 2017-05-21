@@ -280,6 +280,7 @@ public class GameManager {
                 case "esl":
                     opponentSaluting = false;
                     mHandler.removeCallbacks(null);
+                    playSound("");
                 case "fir":
                     int xPosFired = Integer.parseInt(code.substring(3, code.indexOf("|")));
                     int yPosFired = Integer.parseInt(code.substring(code.indexOf("|") + 1));
@@ -317,7 +318,7 @@ public class GameManager {
     }
 
     /**
-     * Informs GamaManager on status of salute which then acts accordingly. 
+     * Informs GamaManager on status of salute which then acts accordingly.
      *
      * @param isSaluting
      */
