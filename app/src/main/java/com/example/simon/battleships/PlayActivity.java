@@ -15,11 +15,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-<<<<<<< HEAD
+
 import android.widget.ImageView;
-=======
+
 import android.widget.ProgressBar;
->>>>>>> origin/master
+
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -65,9 +65,7 @@ public class PlayActivity extends Activity {
         warningText = (TextView) findViewById(R.id.warningtext);
 
         handler = new Handler();
-        if(GameManager.isTutorial()){
-            holdTouch.setVisibility(View.VISIBLE);
-        }
+
 
         final ConstraintLayout LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
         VIBRATOR = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -75,6 +73,11 @@ public class PlayActivity extends Activity {
         reloadingText = (TextView) findViewById(R.id.reloadingText);
         reloadProgressBar.setVisibility(View.GONE);
         reloadingText.setVisibility(View.GONE);
+
+        if(GameManager.isTutorial()){
+            holdTouch.setVisibility(View.VISIBLE);
+
+        }
         GameManager.setContext(this);
 
         LAYOUT.setOnTouchListener(new View.OnTouchListener() {
@@ -125,17 +128,19 @@ public class PlayActivity extends Activity {
                     VIBRATOR.cancel();
                     isVibrating = false;
                     launchMissile(x, y);
-<<<<<<< HEAD
+
 
                     if(GameManager.isTutorial() && GameManager.isHit(x, y) != 1){
-
-                            warningText.setVisibility(View.VISIBLE);
+                        reloadProgressBar.setVisibility(View.INVISIBLE);
+                        reloadingText.setVisibility(View.INVISIBLE);
+                        warningText.setVisibility(View.VISIBLE);
                             tutorialStep1.setVisibility(View.INVISIBLE);
                             LAYOUT.setBackgroundColor(Color.BLACK);
 
                         if (GameManager.isHit(x,y) == 2 ) {
                             tutorialStep2.setVisibility(View.INVISIBLE);
                             warningText.setText("Note: The rings are only for tutorial");
+                            reloadProgressBar.setVisibility(View.VISIBLE);
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
@@ -168,8 +173,7 @@ public class PlayActivity extends Activity {
                             }
                         }, 3000);
                     }
-=======
->>>>>>> origin/master
+
                 }
 
                 return true;

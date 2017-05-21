@@ -23,12 +23,9 @@ public class MainActivity extends Activity {
         Button joinButton = (Button) findViewById(R.id.joinButton);
         Button howButton = (Button) findViewById(R.id.howButton);
         Button testButton = (Button) findViewById(R.id.testButton);
-<<<<<<< HEAD
 
-=======
         GameManager.setContext(this);
-        howButton.setText("Bugged");
->>>>>>> origin/master
+
 
         //Calls the GameManager to set up game to match resources
         GameManager.initializeGame(getResources().getDisplayMetrics().widthPixels / 9);
