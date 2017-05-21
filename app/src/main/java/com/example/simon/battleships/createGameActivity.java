@@ -2,6 +2,7 @@ package com.example.simon.battleships;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.DhcpInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -10,49 +11,42 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 
-public class createGameActivity extends Activity {
-    private SocketHandler socketHandler;
-    private EditText firstIP, secondIP;
-    private String[] ip;
+public class createGameActivity extends ConnectActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_create_game);
 
-        firstIP = (EditText) findViewById(R.id.firstIP);
-        secondIP = (EditText) findViewById(R.id.secondIP);
-
-        WifiManager mManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-        WifiInfo mWifiInfo = mManager.getConnectionInfo();
-        ip = new String[4];
-        displayIP(mWifiInfo.getIpAddress());
+        ipText = (EditText) findViewById(R.id.IP);
+        ipText.setText(getCode());
 
         GameManager.setActivity(this);
         Host host = new Host(this);
         host.execute();
     }
 
-    public void continueToNextActivity(){
-        Log.e("con", "inside ContinueToNextActivity");
-        Intent intent = new Intent(this, PlaceBoatActivity.class);
-        startActivity(intent);
-
-    }
-
-    /**
-     * Formats and displays your IP
-     */
-    private void displayIP(int ipAddress) {
-        for(int i = 0; i <4; i++) {
-            ip[i] = String.valueOf((ipAddress >> (i*8) & 0xFF));
+    private String getCode() {
+        StringBuilder sb = new StringBuilder();
+        boolean hasPrior = false;
+        Log.e("Number sgments", String.valueOf(numberOfSignificantSegments()));
+        for(int i = ip.length - numberOfSignificantSegments(); i < ip.length; i++) {
+            if(!hasPrior) {
+                Log.e("IP segment", ip[i]);
+                sb.append(ip[i]);
+                hasPrior = true;
+            } else {
+                String segment = ip[i];
+                for(int j = 0; j < 3 - segment.length(); j++) {
+                    sb.append("0");
+                }
+                sb.append(ip[i]);
+            }
         }
-        firstIP.setText(ip[2]);
-        secondIP.setText(ip[3]);
+        return sb.toString();
     }
+
 }
 
 
