@@ -137,7 +137,7 @@ public class PlayActivity extends Activity {
                     launchMissile(x, y);
 
 
-                    if(GameManager.isTutorial() && GameManager.isHit(x, y) != 1){
+                    if(GameManager.isTutorial()){
                         fireReloadProgressBar.setVisibility(View.INVISIBLE);
                         fireReloadText.setVisibility(View.INVISIBLE);
                         dodgeReloadProgressBar.setVisibility(View.INVISIBLE);
@@ -148,7 +148,7 @@ public class PlayActivity extends Activity {
 
                         if (GameManager.isHit(x,y) == 2 ) {
                             tutorialStep2.setVisibility(View.INVISIBLE);
-                            warningText.setText("Note: The rings are only for tutorial");
+                            warningText.setText("Note: The helping rings are only for tutorial");
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
@@ -159,7 +159,7 @@ public class PlayActivity extends Activity {
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Intent intent = new Intent(PlayActivity.this, MainActivity.class);
+                                    Intent intent = new Intent(PlayActivity.this, howToPlayActivity.class);
                                     PlayActivity.this.startActivity(intent);
                                 }
                             }, 6000);
