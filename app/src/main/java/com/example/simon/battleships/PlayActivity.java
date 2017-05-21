@@ -30,8 +30,11 @@ public class PlayActivity extends Activity {
     private final int MISS_DELAY = 160;
     private boolean isVibrating = false;
 
-    private ProgressBar reloadProgressBar;
-    private TextView reloadingText;
+    //Progressbars
+    private ProgressBar fireReloadProgressBar;
+    private TextView fireReloadText;
+    private ProgressBar dodgeReloadProgressBar;
+    private TextView dodgeReloadText;
 
     //Cooldown
     private boolean fireOnCooldown = false;
@@ -67,10 +70,16 @@ public class PlayActivity extends Activity {
 
         final ConstraintLayout LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
         VIBRATOR = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        reloadProgressBar = (ProgressBar) findViewById(R.id.reloadingProgress);
-        reloadingText = (TextView) findViewById(R.id.reloadingText);
-        reloadProgressBar.setVisibility(View.GONE);
-        reloadingText.setVisibility(View.GONE);
+
+        //Progressbar initialization
+        fireReloadProgressBar = (ProgressBar) findViewById(R.id.reloadingFireProgress);
+        fireReloadText = (TextView) findViewById(R.id.reloadingFireText);
+        fireReloadProgressBar.setVisibility(View.GONE);
+        fireReloadText.setVisibility(View.GONE);
+        dodgeReloadProgressBar = (ProgressBar) findViewById(R.id.reloadingDodgeProgress);
+        dodgeReloadText = (TextView) findViewById(R.id.reloadingDodgeText);
+        dodgeReloadProgressBar.setVisibility(View.GONE);
+        dodgeReloadText.setVisibility(View.GONE);
 
         if(GameManager.isTutorial()){
             holdTouch.setVisibility(View.VISIBLE);
@@ -129,8 +138,10 @@ public class PlayActivity extends Activity {
 
 
                     if(GameManager.isTutorial() && GameManager.isHit(x, y) != 1){
-                        reloadProgressBar.setVisibility(View.INVISIBLE);
-                        reloadingText.setVisibility(View.INVISIBLE);
+                        fireReloadProgressBar.setVisibility(View.INVISIBLE);
+                        fireReloadText.setVisibility(View.INVISIBLE);
+                        dodgeReloadProgressBar.setVisibility(View.INVISIBLE);
+                        dodgeReloadText.setVisibility(View.INVISIBLE);
                         warningText.setVisibility(View.VISIBLE);
                             tutorialStep1.setVisibility(View.INVISIBLE);
                             LAYOUT.setBackgroundColor(Color.BLACK);
@@ -181,6 +192,7 @@ public class PlayActivity extends Activity {
                         }
                     }, DODGE_COOLDOWN);
                     GameManager.dodge();
+                    animateDodgeCooldown();
                 }
             }
         });
@@ -201,7 +213,7 @@ public class PlayActivity extends Activity {
                     fireOnCooldown = false;
                 }
             }, FIRE_COOLDOWN);
-            animateCooldown();
+            animateFireCooldown();
             int gridPixelWidth = GameManager.getGridPixelWidth();
             GameManager.playSound("fire");
             handler.postDelayed(new Runnable() {
@@ -230,19 +242,42 @@ public class PlayActivity extends Activity {
         }
     }
 
-    private void animateCooldown() {
-        reloadProgressBar.setVisibility(View.VISIBLE);
-        reloadingText.setVisibility(View.VISIBLE);
-        reloadProgressBar.setProgress(0);
+    /**
+     * Start reload animation for missile cooldown
+     */
+    private void animateFireCooldown() {
+        fireReloadProgressBar.setVisibility(View.VISIBLE);
+        fireReloadText.setVisibility(View.VISIBLE);
+        fireReloadProgressBar.setProgress(0);
         /** CountDownTimer runs for FIRE_COOLDOWN milliseconds with a tick every 100 milliseconds */
         CountDownTimer cdt = new CountDownTimer(FIRE_COOLDOWN, 10) {
             public void onTick(long millisUntilFinished) {
-                reloadProgressBar.setProgress((int) (FIRE_COOLDOWN - millisUntilFinished));
+                fireReloadProgressBar.setProgress((int) (FIRE_COOLDOWN - millisUntilFinished));
             }
 
             public void onFinish() {
-                reloadProgressBar.setVisibility(View.GONE);
-                reloadingText.setVisibility(View.GONE);
+                fireReloadProgressBar.setVisibility(View.GONE);
+                fireReloadText.setVisibility(View.GONE);
+            }
+        }.start();
+    }
+
+    /**
+     * Start reload animation for dodging cooldown
+     */
+    private void animateDodgeCooldown() {
+        dodgeReloadProgressBar.setVisibility(View.VISIBLE);
+        dodgeReloadText.setVisibility(View.VISIBLE);
+        dodgeReloadProgressBar.setProgress(0);
+        /** CountDownTimer runs for FIRE_COOLDOWN milliseconds with a tick every 100 milliseconds */
+        CountDownTimer cdt = new CountDownTimer(DODGE_COOLDOWN, 10) {
+            public void onTick(long millisUntilFinished) {
+                dodgeReloadProgressBar.setProgress((int) (DODGE_COOLDOWN - millisUntilFinished));
+            }
+
+            public void onFinish() {
+                dodgeReloadProgressBar.setVisibility(View.GONE);
+                dodgeReloadText.setVisibility(View.GONE);
             }
         }.start();
     }
