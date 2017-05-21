@@ -10,25 +10,15 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
 import android.os.Bundle;;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-
 import android.widget.ImageView;
-
 import android.widget.ProgressBar;
-
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
-
-public class PlayActivity extends Activity {
+public class PlayActivity extends Activity implements ShakeListener.Callback {
     //    private Timer currentTimer = new Timer();
     private Handler handler;
     private Vibrator VIBRATOR;
@@ -280,6 +270,16 @@ public class PlayActivity extends Activity {
         }
     }
 
+    //Disables back button
     @Override
     public void onBackPressed() {}
+
+
+    @Override
+    public void shakingStarted() {
+        
+    }
+
+    @Override
+    public void shakingStopped() {}
 }
