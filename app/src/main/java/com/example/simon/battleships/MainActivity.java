@@ -22,11 +22,10 @@ public class MainActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-        Button createButton = (Button) findViewById(R.id.createButton);
-        Button joinButton = (Button) findViewById(R.id.joinButton);
-        Button tutorialButton = (Button) findViewById(R.id.howButton);
+        Button createButton = (Button) findViewById(R.id.attackButton);
+        Button joinButton = (Button) findViewById(R.id.defendingButton);
+        Button tutorialButton = (Button) findViewById(R.id.boatPlaceButton);
         Button testButton = (Button) findViewById(R.id.testButton);
-
         GameManager.setContext(this);
 
         //Calls the GameManager to set up game to match resources
@@ -52,21 +51,8 @@ public class MainActivity extends Activity {
                 GameManager.clearGrid();
                 GameManager.placeShip(4,12);
                 GameManager.setTutorial(true);
-                Intent intent = new Intent(v.getContext(), PlayActivity.class);
+                Intent intent = new Intent(getApplicationContext(), howToPlayActivity.class);
                 startActivity(intent);
-            }
-        });
-        //TESTING PURPOSES
-        testButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                GameManager.missileApproaching(TEST);
-                TEST = !TEST;
-                /*
-                TEST = true;
-                Intent intent = new Intent(v.getContext(), PlaceBoatActivity.class);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                */
             }
         });
     }

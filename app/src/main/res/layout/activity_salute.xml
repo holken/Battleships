@@ -8,12 +8,14 @@
     tools:context="com.example.simon.battleships.SaluteActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/saluteText"
         android:layout_width="272dp"
         android:layout_height="347dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:fontFamily="casual"
         android:text="Salute Your Opponent"
@@ -24,4 +26,44 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/saluteTextTut"
+        android:layout_width="272dp"
+        android:layout_height="347dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="casual"
+        android:text="Start the game by saluting your opponent for 3 seconds "
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="35sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.054" />
+
+    <pl.droidsonroids.gif.GifTextView
+        android:id="@+id/gifSalute"
+        android:layout_width="274dp"
+        android:layout_height="346dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="42dp"
+        android:background="@drawable/giphy"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.87"
+        tools:layout_editor_absoluteY="134dp"
+        app:layout_constraintHorizontal_bias="0.506" />
 </android.support.constraint.ConstraintLayout>
