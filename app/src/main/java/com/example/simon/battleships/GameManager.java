@@ -18,6 +18,7 @@ public class GameManager {
     private static int GRID_PIXEL_WIDTH = 120;
     private static int xPos;
     private static int yPos;
+    private static boolean isDodging = false;
 
     //All dem network objectz
     private static Socket client;
@@ -236,6 +237,15 @@ public class GameManager {
         return currActivity;
     }
 
+    public static void dodge() {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+               isDodging = false;
+            }
+        }, 500); //Time for which dodging is active
+        isDodging = true;
+    }
     /**
      * Method that is called from clientWrite when it receives a message which it then forward to this method which handle what to do with the information
      *
@@ -285,7 +295,12 @@ public class GameManager {
                     int xPosFired = Integer.parseInt(code.substring(3, code.indexOf("|")));
                     int yPosFired = Integer.parseInt(code.substring(code.indexOf("|") + 1));
                     if (xPos == xPosFired && yPos == yPosFired) {
-                        Log.e("fir", "I'm dead");
+                        if(!isDodging) {
+                            Log.e("Fire", "HIT");
+                        } else {
+                            Log.e("Fire", "Dodged");
+                        }
+
                     }
                     break;
                 default:
@@ -353,7 +368,7 @@ public class GameManager {
         }
         switch (sound) {
             case "fire":
-                mMediaPlayer = mMediaPlayer.create(currentContext, R.raw.launch);
+                mMediaPlayer = MediaPlayer.create(currentContext, R.raw.launch);
                 mMediaPlayer.start();
                 break;
             case "boom":

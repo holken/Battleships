@@ -28,7 +28,6 @@ public class PlayActivity extends Activity implements ShakeListener.Callback {
     private final int HIT_OR_NEAR_HIT_DELAY = 80;
     private final int MISS_DELAY = 160;
     private boolean isVibrating = false;
-    private MediaPlayer mMediaPlayer;
     private long lastMissileLaunched;           //Keeps track of when the last missile was launched
     private final long FIRE_COOLDOWN = 3000;
     private ProgressBar reloadProgressBar;
@@ -242,32 +241,10 @@ public class PlayActivity extends Activity implements ShakeListener.Callback {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        if (mMediaPlayer != null) {
-            mMediaPlayer.release();
-            mMediaPlayer = null;
-        }
-    }
-
-    @Override
     public void onStop() {
         super.onStop();
         GameManager.clearGrid();
         GameManager.setTutorial(false);
-        if (mMediaPlayer != null) {
-            mMediaPlayer.release();
-            mMediaPlayer = null;
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mMediaPlayer != null) {
-            mMediaPlayer.release();
-            mMediaPlayer = null;
-        }
     }
 
     //Disables back button
@@ -277,7 +254,7 @@ public class PlayActivity extends Activity implements ShakeListener.Callback {
 
     @Override
     public void shakingStarted() {
-        
+
     }
 
     @Override
