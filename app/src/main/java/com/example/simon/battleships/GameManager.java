@@ -246,6 +246,7 @@ public class GameManager {
         }, 500); //Time for which dodging is active
         isDodging = true;
     }
+
     /**
      * Method that is called from clientWrite when it receives a message which it then forward to this method which handle what to do with the information
      *
@@ -290,18 +291,16 @@ public class GameManager {
                     mHandler.removeCallbacks(null);
                     playSound("");
                     break;
-                case "fir":
+                case "hit":
                     Log.e("Fire message", code);
-                    int xPosFired = Integer.parseInt(code.substring(3, code.indexOf("|")));
-                    int yPosFired = Integer.parseInt(code.substring(code.indexOf("|") + 1));
-                    if (xPos == xPosFired && yPos == yPosFired) {
-                        if(!isDodging) {
-                            Log.e("Fire", "HIT");
-                        } else {
-                            Log.e("Fire", "Dodged");
-                        }
-
+                    if(!isDodging) {
+                        Log.e("Fire", "HIT");
+                    } else {
+                        Log.e("Fire", "Dodged");
                     }
+                    break;
+                case "mis":
+                    Log.e("Fire message", code + "s");
                     break;
                 default:
                     break;

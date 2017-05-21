@@ -164,7 +164,6 @@ public class PlayActivity extends Activity implements ShakeListener.Callback {
             animateCooldown();
             lastMissileLaunched = System.currentTimeMillis();
             int gridPixelWidth = GameManager.getGridPixelWidth();
-            GameManager.send("fir" + x / gridPixelWidth + "|" + y / gridPixelWidth);
             GameManager.playSound("fire");
             handler.postDelayed(new Runnable() {
                 @Override
@@ -173,6 +172,7 @@ public class PlayActivity extends Activity implements ShakeListener.Callback {
                 }
             }, 3000);
             if (GameManager.isHit(x, y) == 2) {
+                GameManager.send("hit");
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -180,6 +180,7 @@ public class PlayActivity extends Activity implements ShakeListener.Callback {
                     }
                 }, 3000);
             } else {
+                GameManager.send("mis");
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -254,7 +255,7 @@ public class PlayActivity extends Activity implements ShakeListener.Callback {
 
     @Override
     public void shakingStarted() {
-
+        GameManager.dodge();
     }
 
     @Override
