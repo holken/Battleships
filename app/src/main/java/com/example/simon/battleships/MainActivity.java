@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
         Button createButton = (Button) findViewById(R.id.attackButton);
         Button joinButton = (Button) findViewById(R.id.defendingButton);
         Button tutorialButton = (Button) findViewById(R.id.boatPlaceButton);
-        Button testButton = (Button) findViewById(R.id.testButton);
+        //Button testButton = (Button) findViewById(R.id.testButton);
         GameManager.setContext(this);
 
         //Calls the GameManager to set up game to match resources

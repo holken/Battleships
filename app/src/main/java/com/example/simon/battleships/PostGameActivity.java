@@ -1,9 +1,12 @@
 package com.example.simon.battleships;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -29,8 +32,6 @@ public class PostGameActivity extends Activity {
 
         Button playAgainButton = (Button) findViewById(R.id.playAgainButton);
         Button menuButton = (Button) findViewById(R.id.menuButton);
-
-        final ConstraintLayout LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
 
         playAgainButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

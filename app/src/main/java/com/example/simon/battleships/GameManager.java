@@ -319,8 +319,9 @@ public class GameManager {
                 case "uwb":
                     myScore++;
                     iWon = true;
-                    Intent intent = new Intent(currentContext, PostGameActivity.class);
-                    currentContext.startActivity(intent);
+                    Intent intent = new Intent(currActivity, PostGameActivity.class);
+                    currActivity.startActivity(intent);
+                    currActivity.finish();
                     break;
                 default:
                     break;
@@ -335,8 +336,9 @@ public class GameManager {
         send("uwb");
         iWon = false;
         opponentScore++;
-        Intent intent = new Intent(currentContext, PostGameActivity.class);
-        currentContext.startActivity(intent);
+        Intent intent = new Intent(currActivity, PostGameActivity.class);
+        currActivity.startActivity(intent);
+        currActivity.finish();
     }
 
     /**
