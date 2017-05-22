@@ -68,9 +68,6 @@ public class howToPlayActivity extends Activity {
     public void onBackPressed() {
         GameManager.setTutorial(false);
         startActivity(new Intent(howToPlayActivity.this, MainActivity.class));
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
     }
 }
