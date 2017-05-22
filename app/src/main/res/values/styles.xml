@@ -22,5 +22,4 @@
         <item name="android:windowEnterAnimation">@layout/fade_in</item>
         <item name="android:windowExitAnimation">@layout/fade_out</item>
     </style>
-
 </resources>

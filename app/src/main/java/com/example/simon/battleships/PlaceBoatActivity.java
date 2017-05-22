@@ -29,6 +29,7 @@ public class PlaceBoatActivity extends Activity {
     private TextView textTutorial2;
     private int gridX;
     private int gridY;
+    private ConstraintLayout LAYOUT;
 
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -56,7 +57,7 @@ public class PlaceBoatActivity extends Activity {
             textTutorial.setVisibility(View.VISIBLE);
         }
         //imageView set width/height to GRID_PIXEL_WIDTH
-        final ConstraintLayout LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
+        LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
         LAYOUT.setOnTouchListener(new View.OnTouchListener() {
 
 
@@ -117,15 +118,15 @@ public class PlaceBoatActivity extends Activity {
     }
 
     private void readyUp() {
-        if (GameManager.hasClientSocket()){
-            GameManager.send("plc"+ gridX + "|" + gridY);
+        if (GameManager.hasClientSocket()) {
+            GameManager.send("plc" + gridX + "|" + gridY);
             GameManager.setReady(true);
             Log.e("positions", "Sent - position x: " + gridX + ", position y: " + gridY);
         } else {
             Log.e("ReadyUp fail", "Has no client socket.");
         }
-
         hideButtons();
+        LAYOUT.setOnTouchListener(null);
         spinner.setVisibility(View.VISIBLE);
         waitingText.setVisibility(View.VISIBLE);
     }
@@ -150,5 +151,20 @@ public class PlaceBoatActivity extends Activity {
         imageView.setX(gridX * gridPixelWidth);
         imageView.setY(gridY * gridPixelWidth);
         imageView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        hideButtons();
+        spinner.setVisibility(View.GONE);
+        imageView.setVisibility(View.GONE);
+        waitingText.setVisibility(View.GONE);
+        textView.setVisibility(View.VISIBLE);
+    }
+
+    //Disables back button
+    @Override
+    public void onBackPressed() {
     }
 }

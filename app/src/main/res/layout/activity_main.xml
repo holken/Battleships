@@ -51,27 +51,6 @@
         app:layout_constraintTop_toBottomOf="@+id/defendingButton" />
 
     <Button
-        android:id="@+id/testButton"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="64dp"
-        android:layout_marginRight="64dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/button_style"
-        android:paddingTop="5dp"
-        android:elevation="5dp"
-        android:textColor="#2479E7"
-        android:fontFamily="casual"
-        android:text="TEST"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/boatPlaceButton" />
-
-    <Button
         android:id="@+id/defendingButton"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="0dp"

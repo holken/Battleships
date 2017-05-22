@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
 import android.os.Bundle;;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -29,6 +30,7 @@ public class PlayActivity extends Activity {
     private final int HIT_OR_NEAR_HIT_DELAY = 80;
     private final int MISS_DELAY = 160;
     private boolean isVibrating = false;
+    private ConstraintLayout LAYOUT;
 
     //Progressbars
     private ProgressBar fireReloadProgressBar;
@@ -68,7 +70,7 @@ public class PlayActivity extends Activity {
         handler = new Handler();
 
 
-        final ConstraintLayout LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
+        LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
         VIBRATOR = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         //Progressbar initialization
@@ -86,6 +88,7 @@ public class PlayActivity extends Activity {
 
         }
         GameManager.setContext(this);
+        GameManager.setActivity(this);
 
         LAYOUT.setOnTouchListener(new View.OnTouchListener() {
 
@@ -303,12 +306,22 @@ public class PlayActivity extends Activity {
         super.onStop();
         GameManager.clearGrid();
         GameManager.setTutorial(false);
+        mSensorManager.unregisterListener(mShakeDetector);
+        VIBRATOR.cancel();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mSensorManager.unregisterListener(mShakeDetector);
+        VIBRATOR.cancel();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mSensorManager.unregisterListener(mShakeDetector);
+        VIBRATOR.cancel();
     }
 
     //Disables back button
