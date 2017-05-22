@@ -1,6 +1,8 @@
 package com.example.simon.battleships;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
@@ -16,12 +18,15 @@ import android.widget.TextView;
 
 public class PlaceBoatActivity extends Activity {
     private ImageView imageView;
+    private ImageView imageFinger;
     private ProgressBar spinner;
     private TextView waitingText;
     private Handler handler;
     private Button upperReadyButton;
     private Button lowerReadyButton;
     private TextView textView;
+    private TextView textTutorial;
+    private TextView textTutorial2;
     private int gridX;
     private int gridY;
 
@@ -32,7 +37,10 @@ public class PlaceBoatActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_boat_placing);
         imageView = (ImageView) findViewById(R.id.boatImage);
+        imageFinger = (ImageView) findViewById(R.id.fingerImage);
         textView = (TextView) findViewById(R.id.placeBoatText);
+        textTutorial = (TextView) findViewById(R.id.placeBoatTut);
+        textTutorial2 = (TextView) findViewById(R.id.placeBoatTut2);
         waitingText = (TextView) findViewById(R.id.waitingText);
         waitingText.setVisibility(View.GONE);
         spinner = (ProgressBar) findViewById(R.id.progressBar);
@@ -42,7 +50,11 @@ public class PlaceBoatActivity extends Activity {
         lowerReadyButton = (Button) findViewById(R.id.lowerReadyButton);
         hideButtons();
         GameManager.setContext(this);
-
+        if(GameManager.isTutorial()){
+            imageFinger.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.INVISIBLE);
+            textTutorial.setVisibility(View.VISIBLE);
+        }
         //imageView set width/height to GRID_PIXEL_WIDTH
         final ConstraintLayout LAYOUT = (ConstraintLayout) findViewById(R.id.parent);
         LAYOUT.setOnTouchListener(new View.OnTouchListener() {
@@ -51,6 +63,11 @@ public class PlaceBoatActivity extends Activity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    if(GameManager.isTutorial()){
+                        textTutorial.setVisibility(View.INVISIBLE);
+                        textTutorial2.setVisibility(View.VISIBLE);
+                        imageFinger.setVisibility(View.INVISIBLE);
+                    }
                     textView.setVisibility(View.INVISIBLE);
                     placeShipImage((int) motionEvent.getX(), (int) motionEvent.getY());
                     showReadyButton((int) motionEvent.getY());
@@ -66,6 +83,16 @@ public class PlaceBoatActivity extends Activity {
             upperReadyButton.setVisibility(View.VISIBLE);
             upperReadyButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    if(GameManager.isTutorial()){
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                textTutorial.setVisibility(View.INVISIBLE);
+                                textTutorial2.setText("Good job!");
+                                startActivity(new Intent(PlaceBoatActivity.this, howToPlayActivity.class));
+                            }
+                        }, 1000);
+                    }
                     readyUp();
                 }
             });
@@ -73,6 +100,16 @@ public class PlaceBoatActivity extends Activity {
             lowerReadyButton.setVisibility(View.VISIBLE);
             lowerReadyButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    if(GameManager.isTutorial()){
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                textTutorial.setVisibility(View.INVISIBLE);
+                                textTutorial2.setText("Good job!");
+                                startActivity(new Intent(PlaceBoatActivity.this, howToPlayActivity.class));
+                            }
+                        }, 1000);
+                    }
                     readyUp();
                 }
             });

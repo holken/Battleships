@@ -43,7 +43,8 @@ public class howToPlayActivity extends AppCompatActivity {
         });
         boatPlaceButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), joinGameActivity.class);
+                GameManager.setTutorial(true);
+                Intent intent = new Intent(v.getContext(), PlaceBoatActivity.class);
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
@@ -70,10 +71,8 @@ public class howToPlayActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-
         GameManager.setTutorial(false);
         startActivity(new Intent(howToPlayActivity.this, MainActivity.class));
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
     }
 }

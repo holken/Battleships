@@ -11,10 +11,12 @@ import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import pl.droidsonroids.gif.GifTextView;
@@ -30,6 +32,7 @@ public class SaluteActivity extends Activity implements SensorEventListener {
     private TextView endText;
     private Handler handler;
 
+
     @Override
     public final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,11 +40,15 @@ public class SaluteActivity extends Activity implements SensorEventListener {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_salute);
+
+        // Tutorial
         gifSalute = (GifTextView) findViewById(R.id.gifSalute);
         saluteText = (TextView) findViewById(R.id.saluteText);
         saluteTextTutorial = (TextView) findViewById(R.id.saluteTextTut);
         endText = (TextView) findViewById(R.id.endText);
         handler = new Handler();
+
+
         GameManager.setContext(this);
         Log.e("Entering Salute", "asd");
 
@@ -75,7 +82,7 @@ public class SaluteActivity extends Activity implements SensorEventListener {
                         gifSalute.setVisibility(View.INVISIBLE);
                         saluteTextTutorial.setVisibility(View.INVISIBLE);
                         endText.setVisibility(View.VISIBLE);
-                        //LAYOUT.setBackgroundColor(Color.BLACK);
+
                     }
                 }, 4000);
                 handler.postDelayed(new Runnable() {
