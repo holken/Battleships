@@ -51,9 +51,10 @@ public class PlaceBoatActivity extends Activity {
         lowerReadyButton = (Button) findViewById(R.id.lowerReadyButton);
         hideButtons();
         GameManager.setContext(this);
+
         if(GameManager.isTutorial()){
-            imageFinger.setVisibility(View.VISIBLE);
             textView.setVisibility(View.INVISIBLE);
+            imageFinger.setVisibility(View.VISIBLE);
             textTutorial.setVisibility(View.VISIBLE);
         }
         //imageView set width/height to GRID_PIXEL_WIDTH
@@ -85,14 +86,8 @@ public class PlaceBoatActivity extends Activity {
             upperReadyButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     if(GameManager.isTutorial()){
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
                                 textTutorial.setVisibility(View.INVISIBLE);
-                                textTutorial2.setText("Good job!");
-                                startActivity(new Intent(PlaceBoatActivity.this, howToPlayActivity.class));
-                            }
-                        }, 1000);
+                                startActivity(new Intent(PlaceBoatActivity.this, GoodJobActivity.class));
                     }
                     readyUp();
                 }
@@ -102,14 +97,10 @@ public class PlaceBoatActivity extends Activity {
             lowerReadyButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     if(GameManager.isTutorial()){
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                textTutorial.setVisibility(View.INVISIBLE);
-                                textTutorial2.setText("Good job!");
-                                startActivity(new Intent(PlaceBoatActivity.this, howToPlayActivity.class));
-                            }
-                        }, 1000);
+                        if(GameManager.isTutorial()){
+                            textTutorial.setVisibility(View.INVISIBLE);
+                            startActivity(new Intent(PlaceBoatActivity.this, GoodJobActivity.class));
+                        }
                     }
                     readyUp();
                 }
@@ -127,8 +118,10 @@ public class PlaceBoatActivity extends Activity {
         }
         hideButtons();
         LAYOUT.setOnTouchListener(null);
-        spinner.setVisibility(View.VISIBLE);
-        waitingText.setVisibility(View.VISIBLE);
+        if (!GameManager.isTutorial()) {
+            spinner.setVisibility(View.VISIBLE);
+            waitingText.setVisibility(View.VISIBLE);
+        }
     }
 
     private void hideButtons() {
@@ -160,7 +153,7 @@ public class PlaceBoatActivity extends Activity {
         spinner.setVisibility(View.GONE);
         imageView.setVisibility(View.GONE);
         waitingText.setVisibility(View.GONE);
-        textView.setVisibility(View.VISIBLE);
+       // textView.setVisibility(View.VISIBLE);
     }
 
     //Disables back button

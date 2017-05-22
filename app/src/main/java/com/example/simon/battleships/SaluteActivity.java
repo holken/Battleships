@@ -29,7 +29,6 @@ public class SaluteActivity extends Activity implements SensorEventListener {
     private GifTextView gifSalute;
     private TextView saluteText;
     private TextView saluteTextTutorial;
-    private TextView endText;
     private Handler handler;
 
 
@@ -45,7 +44,6 @@ public class SaluteActivity extends Activity implements SensorEventListener {
         gifSalute = (GifTextView) findViewById(R.id.gifSalute);
         saluteText = (TextView) findViewById(R.id.saluteText);
         saluteTextTutorial = (TextView) findViewById(R.id.saluteTextTut);
-        endText = (TextView) findViewById(R.id.endText);
         handler = new Handler();
 
 
@@ -81,17 +79,10 @@ public class SaluteActivity extends Activity implements SensorEventListener {
                     public void run() {
                         gifSalute.setVisibility(View.INVISIBLE);
                         saluteTextTutorial.setVisibility(View.INVISIBLE);
-                        endText.setVisibility(View.VISIBLE);
+                        startActivity(new Intent(SaluteActivity.this, GoodJobActivity.class));
+                    }
+                }, 2500);
 
-                    }
-                }, 4000);
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        endText.setVisibility(View.INVISIBLE);
-                        startActivity(new Intent(SaluteActivity.this, howToPlayActivity.class));
-                    }
-                }, 6000);
             }
             GameManager.setIsSaluting(true);
         } else if (distance > 5) {

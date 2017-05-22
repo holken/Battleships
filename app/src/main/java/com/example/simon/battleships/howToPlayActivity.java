@@ -35,7 +35,8 @@ public class howToPlayActivity extends Activity {
 
         defendButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), createGameActivity.class);
+
+                Intent intent = new Intent(v.getContext(), PlaceBoatActivity.class);
                 startActivity(intent);
             }
         });
@@ -64,6 +65,8 @@ public class howToPlayActivity extends Activity {
             }
         });
     }
+
+    // Disables back button, reseting tutorial.
     @Override
     public void onBackPressed() {
         GameManager.setTutorial(false);
