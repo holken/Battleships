@@ -36,7 +36,7 @@ public class howToPlayActivity extends Activity {
         defendButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                Intent intent = new Intent(v.getContext(), PlaceBoatActivity.class);
+                Intent intent = new Intent(v.getContext(), GoodJobActivity.class);
                 startActivity(intent);
             }
         });

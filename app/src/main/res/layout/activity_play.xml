@@ -23,7 +23,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text1"
-        app:layout_constraintVertical_bias="0.505"
+        app:layout_constraintVertical_bias="0.593"
         app:srcCompat="@drawable/holdtouchhd"
         tools:ignore="ContentDescription" />
 
@@ -154,6 +154,35 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         tools:text="Dodge" />
+
+    <ImageView
+        android:id="@+id/imageYellow"
+        android:layout_width="109dp"
+        android:layout_height="115dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@android:color/holo_orange_light"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@android:color/holo_orange_light" />
+
+    <ImageView
+        android:id="@+id/imageRed"
+        android:layout_width="51dp"
+        android:layout_height="39dp"
+        android:layout_marginBottom="75dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@android:color/holo_red_light"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@android:color/holo_red_light" />
 
 
 </android.support.constraint.ConstraintLayout>

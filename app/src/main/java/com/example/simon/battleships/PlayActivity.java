@@ -54,6 +54,8 @@ public class PlayActivity extends Activity {
     private TextView tutorialStep2;
     private ImageView holdTouch;
     private TextView warningText;
+    private ImageView imageRed;
+    private ImageView imageYellow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,8 @@ public class PlayActivity extends Activity {
         tutorialStep1 = (TextView) findViewById(R.id.text1);
         tutorialStep2 = (TextView) findViewById(R.id.text2);
         holdTouch = (ImageView) findViewById(R.id.holdtouch);
+        imageRed = (ImageView) findViewById(R.id.imageRed);
+        imageYellow = (ImageView) findViewById(R.id.imageYellow);
         warningText = (TextView) findViewById(R.id.warningtext);
 
         handler = new Handler();
@@ -103,8 +107,12 @@ public class PlayActivity extends Activity {
                 holdTouch.setVisibility(View.INVISIBLE);
                 tutorialStep2.setVisibility(View.INVISIBLE);
                 tutorialStep2.setVisibility(View.INVISIBLE);
+                imageRed.setVisibility(View.INVISIBLE);
+                imageYellow.setVisibility(View.INVISIBLE);
                 if(GameManager.isTutorial()){  ///
-                    LAYOUT.setBackgroundResource(R.drawable.bluewatertexturelearn);
+                    LAYOUT.setBackgroundResource(R.drawable.bluewatertexture);
+                    imageRed.setVisibility(View.VISIBLE);
+                    imageYellow.setVisibility(View.VISIBLE);
                     tutorialStep1.setVisibility(View.VISIBLE);
                     tutorialStep1.setText("Can you feel the vibrations? Drag your finger to the yellow area" );
                     if(GameManager.isHit(x, y) == 1){  ///
@@ -141,6 +149,8 @@ public class PlayActivity extends Activity {
 
 
                     if(GameManager.isTutorial()){
+                        imageRed.setVisibility(View.INVISIBLE);
+                        imageYellow.setVisibility(View.INVISIBLE);
                         fireReloadProgressBar.setVisibility(View.INVISIBLE);
                         fireReloadText.setVisibility(View.INVISIBLE);
                         dodgeReloadProgressBar.setVisibility(View.INVISIBLE);
