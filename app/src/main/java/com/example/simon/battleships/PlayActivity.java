@@ -149,8 +149,13 @@ public class PlayActivity extends Activity {
 
 
                     if(GameManager.isTutorial()){
+                        int gridPixelWidth = GameManager.getGridPixelWidth();
                         imageRed.setVisibility(View.INVISIBLE);
                         imageYellow.setVisibility(View.INVISIBLE);
+                        imageRed.setY(GameManager.getShipY() * gridPixelWidth);
+                        imageRed.setX(GameManager.getShipX() * gridPixelWidth);
+                        imageYellow.setY((GameManager.getShipY() - 1) * gridPixelWidth);
+                        imageYellow.setX((GameManager.getShipX() - 1) * gridPixelWidth);
                         fireReloadProgressBar.setVisibility(View.INVISIBLE);
                         fireReloadText.setVisibility(View.INVISIBLE);
                         dodgeReloadProgressBar.setVisibility(View.INVISIBLE);
@@ -161,6 +166,7 @@ public class PlayActivity extends Activity {
 
                         if (GameManager.isHit(x,y) == 2 ) {
                             tutorialStep2.setVisibility(View.INVISIBLE);
+                            LAYOUT.setOnTouchListener(null);
                             warningText.setText("Note: The helping rings are only for tutorial");
                             handler.postDelayed(new Runnable() {
                                 @Override

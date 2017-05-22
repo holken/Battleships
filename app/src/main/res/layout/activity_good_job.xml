@@ -18,7 +18,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:fontFamily="casual"
-        android:text="When playing, shake your phone to doge incoming missiles from your opponent."
+        android:text="When playing, shake your phone to dodge incoming missiles from your opponent."
         android:textAlignment="center"
         android:textColor="@android:color/background_light"
         android:textSize="35sp"
